@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جزوه امتحانی Micro 2 | آشنایی با زبان اسمبلی</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5f5;color:#1d2b32;font:15px/2 Tahoma,Arial,sans-serif}
+header{background:#294b49;color:white;padding:30px 18px}.wrap{max-width:980px;margin:auto;padding:0 15px}
+h1{font-size:29px;margin:0}header p{margin:4px 0;color:#dce9e5}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.chips span{border:1px solid #ffffff55;border-radius:20px;padding:2px 10px;font-size:12px}
+nav{position:sticky;top:0;background:#ffffffed;border-bottom:1px solid #d8e2e1;padding:9px 0;z-index:2}.tools{display:flex;gap:8px}.tools input{flex:1;min-width:80px;padding:9px;border:1px solid #ccd8d7;border-radius:9px;font:inherit}button{border:0;border-radius:9px;background:#b95843;color:white;padding:8px 13px;font:inherit;cursor:pointer}.secondary{background:#e4eeeb;color:#244d47}
+main{padding:18px 0 45px}.card{background:white;border:1px solid #dce4e3;border-radius:13px;padding:18px;margin:13px 0;box-shadow:0 3px 13px #193d3b09}
+h2{font-size:20px;color:#b95843;margin:0 0 10px;border-bottom:2px solid #f0ddd7;padding-bottom:7px}h3{font-size:16px;color:#27645a;margin:15px 0 5px}
+ul,ol{padding-right:24px;margin:5px 0}li{margin:3px 0}p{margin:7px 0}
+.callout{background:#fff1ec;border-right:4px solid #bd5944;padding:10px 13px;border-radius:8px;margin:10px 0}.info{background:#edf6f3;border-right:4px solid #367568;padding:10px 13px;border-radius:8px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}td,th{border:1px solid #d9e2e1;padding:8px;text-align:right;vertical-align:top}th{background:#eaf2ef;color:#24574f}
+.ltr{direction:ltr;unicode-bidi:embed;font-family:Consolas,monospace;background:#eef2f5;padding:2px 5px;border-radius:4px;display:inline-block}
+.tag{font-size:11px;background:#fbe8e2;color:#9e4937;border-radius:5px;padding:1px 7px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px}.mini{background:#f7faf9;border:1px solid #dce5e2;border-radius:9px;padding:10px}.muted{font-size:12px;color:#657771}
+label{display:block;margin:6px 0}input[type=checkbox]{accent-color:#b95843;margin-left:8px}.hide{display:none!important}footer{text-align:center;color:#657771;padding:18px}
+@media print{body{background:white;font-size:11pt}nav{display:none}header{background:white;color:#111;border-bottom:2px solid #555;padding:12px}header p{color:#333}.card{box-shadow:none;break-inside:avoid;padding:12px;margin:8px 0}.wrap{max-width:none;padding:0 6px}h2{font-size:16pt}}
+</style></head>
+<body>
+<header><div class="wrap"><h1>جزوه فشرده و امتحانی Micro 2</h1><p>آشنایی با زبان اسمبلی و ابزارهای برنامه‌نویسی</p><div class="chips"><span>بر اساس تمام ۲۲ صفحه PDF</span><span>فارسی و راست‌چین</span><span>نکات مهم + نمونه + پرسش</span></div></div></header>
+<nav><div class="wrap tools"><input id="q" placeholder="جست‌وجو در جزوه..."><button onclick="window.print()">چاپ / ذخیره PDF</button><button class="secondary" onclick="document.getElementById('q').value='';filter()">پاک‌کردن</button></div></nav>
+<main class="wrap" id="main">
+<section class="card"><h2>نقشه مطالعه و اولویت امتحانی</h2>
+<p>این جزوه فقط از محتوای فایل <b>Micro2.pdf (۲۲ صفحه)</b> تهیه شده است. اولویت‌ها بر اساس تعریف‌ها، مقایسه‌ها، مراحل شماره‌دار، اصطلاحات انگلیسی و نکات برجسته‌شده در اسلایدهاست؛ پیش‌بینی قطعی سؤال نیست.</p>
+<div class="callout"><b>اولویت خیلی بالا:</b> تفاوت زبان سطح بالا/اسمبلی/ماشین، مزایا و معایب هرکدام، دلایل استفاده از اسمبلی، وظیفه Compiler و Assembler، دو گذر اسمبلر، اجزای Object File، وظیفه Linker و Loader.</div>
+<div class="info"><b>محدوده فایل:</b> اسلاید آخر با عنوان «Jump and link» فقط عنوان را نشان می‌دهد و در همین PDF توضیح یا مثال متنی بیشتری برای آن وجود ندارد؛ بنابراین مطلب اضافه‌ای درباره آن حدس زده نشده است.</div></section>
+
+<section class="card"><h2>۱. سلسله‌مراتب زبان‌ها <span class="tag">احتمال خیلی بالا</span></h2>
+<p>برنامه کامپیوتری در نهایت باید به زبانی تبدیل شود که سخت‌افزار بتواند آن را اجرا کند. ترتیب کلی شکل اسلاید:</p>
+<div class="grid"><div class="mini"><b>زبان سطح بالا</b><br>مانند C، C++، C#، Java، Basic، Fortran و Cobol.</div><div class="mini"><b>زبان اسمبلی</b><br>زبان سطح پایین‌تر و وابسته به پردازنده؛ با نمادهای قابل‌خواندن‌تر از زبان ماشین.</div><div class="mini"><b>زبان ماشین</b><br>دستورهای قابل‌فهم برای سخت‌افزار که به شکل صفر و یک نمایش داده می‌شوند.</div></div>
+<ul><li>زبان‌های سطح بالا عموماً <b>غیر وابسته به ماشین</b> هستند.</li><li>زبان‌های سطح پایین، از جمله اسمبلی و ماشین، <b>وابسته به ماشین</b> هستند.</li><li>جزئیات اجرای برنامه در ماشین از نویسنده برنامه سطح بالا پنهان است.</li><li>هر دستور زبان سطح بالا ممکن است به چندین دستور زبان ماشین تبدیل شود.</li></ul>
+<h3>زبان اسمبلی چیست؟</h3><ul><li>از نام‌های سمبولیک برای مشخص‌کردن عملگرها، ثبات‌ها و خانه‌های حافظه استفاده می‌کند.</li><li>از زبان ماشین سطح بالاتری دارد و خوانایی آن بیشتر است.</li><li>رابطه آن با دستورهای زبان ماشین یک‌به‌یک است (طبق اسلاید).</li><li>هر خانواده پردازنده زبان اسمبلی مخصوص خود را دارد.</li><li>به سخت‌افزار وابسته است؛ هر پردازنده دستورهای مربوط به خود را دارد.</li></ul>
+<h3>زبان ماشین</h3><ul><li>زبان قابل فهم برای کامپیوتر و وابسته به سخت‌افزار است.</li><li>در نمایش انسانی از صفر و یک استفاده می‌کند؛ در اسلاید از آن به‌عنوان «زبان ولتاژ» نیز یاد شده است.</li></ul>
+<div class="callout"><b>حفظی:</b> High-level = خواناتر و مستقل‌تر از ماشین؛ Assembly = نمادین ولی وابسته به پردازنده؛ Machine = صفر و یک و قابل اجرای مستقیم توسط سخت‌افزار.</div></section>
+
+<section class="card"><h2>۲. مثال تبدیل برنامه از C به اسمبلی و ماشین</h2>
+<p>در مثال اسلاید، هدف جمع دو عدد ۴ و ۵ و قراردادن نتیجه در خروجی P0 است.</p>
+<h3>کد سطح بالا (C)</h3><pre class="ltr">#include &lt;stdio.h&gt;
+int x = 4, y = 5;
+int z;
+int main()
+{
+    z = x + y;
+    printf("%d\n", z);
+}</pre>
+<h3>معادل اسمبلی نشان‌داده‌شده در اسلاید</h3><pre class="ltr">MOV 22H, 4
+MOV 23H, 5
+MOV A, 22H
+ADD A, 23H
+MOV 24H, A
+MOV P0, 24H</pre>
+<ul><li>عدد ۴ در آدرس <span class="ltr">22H</span> و عدد ۵ در آدرس <span class="ltr">23H</span> قرار می‌گیرد.</li><li>مقدار آدرس <span class="ltr">22H</span> به ثبات A منتقل می‌شود.</li><li>مقدار آدرس <span class="ltr">23H</span> به A اضافه می‌شود.</li><li>نتیجه در آدرس <span class="ltr">24H</span> ذخیره و سپس به <span class="ltr">P0</span> منتقل می‌شود.</li></ul>
+<div class="info"><b>نکته:</b> اسلایدهای ۷ تا ۹ همین مثال را مرحله‌به‌مرحله از کد C به اسمبلی و سپس نمایش باینری نشان می‌دهند. ممکن است سؤال مفهومیِ «ترجمه در سطوح مختلف» از این شکل طرح شود.</div></section>
+
+<section class="card"><h2>۳. مزایا و محدودیت‌های زبان سطح بالا <span class="tag">احتمال بالا</span></h2>
+<h3>مزایای زبان سطح بالا</h3><ul><li>برنامه‌نویسی سریع‌تر است.</li><li>به تعداد دستورهای کمتری نیاز دارد.</li><li>عیب‌یابی برنامه ساده‌تر است.</li><li>برنامه‌ها قابل‌حمل (Portable) هستند.</li><li>وابستگی کمتری به ماشین دارند و با تغییر کم یا بدون تغییر می‌توان آن‌ها را به ماشین‌های دیگر منتقل کرد.</li><li>کامپایلر زبان سطح بالا را به زبان اسمبلی مربوطه ترجمه می‌کند (طبق بیان اسلاید).</li></ul>
+<h3>محدودیت اسمبلی</h3><ul><li>برنامه‌های اسمبلی Portable نیستند و فقط برای همان پردازنده نوشته شده‌اند.</li></ul>
+<div class="callout"><b>سؤال مقایسه‌ای:</b> چرا زبان سطح بالا قابل‌حمل‌تر است؟ چون کمتر به ماشین وابسته است؛ اما اسمبلی به دستورهای اختصاصی پردازنده وابسته است.</div></section>
+
+<section class="card"><h2>۴. فواید و دلایل استفاده از زبان اسمبلی <span class="tag">احتمال خیلی بالا</span></h2>
+<h3>فواید اسمبلی (چه چیزهایی را آشکار می‌کند؟)</h3><ol><li>نشان می‌دهد برنامه چگونه با پردازنده، سیستم‌عامل و BIOS ارتباط برقرار می‌کند.</li><li>نشان می‌دهد داده چگونه روی حافظه یا دستگاه‌های جانبی ذخیره می‌شود.</li><li>نشان می‌دهد پردازنده چگونه دستورها را اجرا می‌کند و دستورها چگونه به داده‌ها دسترسی پیدا می‌کنند.</li><li>نشان می‌دهد برنامه چگونه به دستگاه‌های خارجی دسترسی پیدا می‌کند.</li></ol>
+<h3>دلایل استفاده از اسمبلی</h3><ul><li>برنامه اسمبلی نسبت به برنامه مشابه سطح بالا حافظه کمتری نیاز دارد و سرعت اجرای بالاتری دارد.</li><li>به برنامه‌نویس امکان استفاده از تکنیک‌هایی را می‌دهد که در زبان سطح بالا بسیار سخت یا گاهی غیرممکن‌اند.</li><li>با اینکه اغلب برنامه‌ها با زبان سطح بالا نوشته می‌شوند، بخش‌های بحرانی از نظر زمان اجرا ممکن است با اسمبلی بازنویسی شوند.</li><li>برنامه‌های سیستمی که هنگام اجرای سایر برنامه‌ها در حافظه می‌مانند و درایورهای سخت‌افزار برای کنترل ورودی/خروجی، تقریباً همیشه با اسمبلی نوشته می‌شوند (طبق اسلاید).</li></ul>
+<div class="callout"><b>نکته امتحانی:</b> «حافظه کمتر + سرعت اجرای بیشتر + کنترل سطح پایین‌تر» سه دلیل کلیدی استفاده از اسمبلی‌اند.</div></section>
+
+<section class="card"><h2>۵. ابزارهای برنامه‌نویسی (Language Programming Tools)</h2>
+<p>شش ابزار اصلی که در اسلاید معرفی شده‌اند:</p>
+<table><tr><th>ابزار</th><th>وظیفه اصلی</th></tr>
+<tr><td><b>Compiler</b></td><td>ترجمه دستورهای زبان سطح بالا به زبان اسمبلی (طبق تعریف اسلاید).</td></tr>
+<tr><td><b>Assembler</b></td><td>ترجمه کد اسمبلی به زبان ماشین و تولید Object File.</td></tr>
+<tr><td><b>Linker</b></td><td>ادغام فایل‌های Object و کتابخانه‌های موردنیاز و ساخت فایل اجرایی.</td></tr>
+<tr><td><b>Loader</b></td><td>انتقال فایل اجرایی از حافظه جانبی به RAM و آغاز اجرای آن.</td></tr>
+<tr><td><b>Debugger</b></td><td>Trace کردن برنامه و مشاهده کد، حافظه و مقادیر ثبات‌ها.</td></tr>
+<tr><td><b>Editor</b></td><td>ساخت Source Code؛ بعضی ویرایشگرها قابلیت نمایش Syntax دارند.</td></tr></table>
+<div class="callout"><b>ترتیب کلی مسیر تولید و اجرای برنامه:</b><br><span class="ltr">High-level source → Compiler → Assembly source → Assembler → Object file → Linker → Executable file → Loader → Memory</span></div>
+<p class="muted">در شکل سلسله‌مراتب ترجمه، کتابخانه‌های ماشین نیز به Linker داده می‌شوند. Debugger و Editor ابزارهای کمکی در فرایند توسعه‌اند و در مسیر خطی تولید فایل اجرایی قرار نگرفته‌اند.</p></section>
+
+<section class="card"><h2>۶. Compiler در برابر Assembler <span class="tag">احتمال خیلی بالا</span></h2>
+<table><tr><th>Compiler</th><th>Assembler</th></tr>
+<tr><td>ورودی: زبان سطح بالا</td><td>ورودی: زبان اسمبلی</td></tr>
+<tr><td>خروجیِ مطرح‌شده در اسلاید: زبان اسمبلی</td><td>خروجی: Object File شامل کد ماشین و اطلاعات مرتبط</td></tr>
+<tr><td>هر دستور سطح بالا ممکن است به چند دستور سطح پایین تبدیل شود.</td><td>دستورهای اسمبلی را به دستورهای زبان ماشین ترجمه می‌کند؛ رابطه یک‌به‌یک در اسلاید مطرح شده است.</td></tr></table>
+<div class="info"><b>تعریف Compiler:</b> برنامه‌ای است که دستورات نوشته‌شده با زبان سطح بالا را به زبان اسمبلی ترجمه می‌کند.</div>
+<div class="info"><b>تعریف Assembler:</b> برنامه‌ای است که کدهای نوشته‌شده به زبان اسمبلی را به فایل Object تبدیل می‌کند؛ دستورهای اسمبلی را به زبان ماشین ترجمه می‌کند.</div></section>
+
+<section class="card"><h2>۷. اسمبلر و دو گذر آن (Two-pass Assembler) <span class="tag">احتمال خیلی بالا</span></h2>
+<ul><li>اسمبلر اعداد دهدهی و هگزادسیمال را به اعداد باینری تبدیل می‌کند.</li><li>فایل Object ترکیبی از دستورها، داده‌ها و اطلاعات لازم برای قرار دادن داده‌ها در حافظه است.</li></ul>
+<h3>گذر اول (Pass 1)</h3><ol><li>برنامه خط‌به‌خط خوانده می‌شود.</li><li>برچسب‌ها (Labels) شناسایی می‌شوند.</li><li>برچسب‌ها در جدول نمادها (Symbol Table) ذخیره می‌شوند.</li></ol>
+<h3>گذر دوم (Pass 2)</h3><ol><li>اطلاعات موجود در Symbol Table استفاده می‌شود.</li><li>برای هر خط برنامه، کد ماشین تولید می‌شود.</li></ol>
+<div class="callout"><b>حفظی دقیق:</b> Pass 1 = خواندن برنامه و ساخت Symbol Table؛ Pass 2 = استفاده از Symbol Table و تولید کد ماشین.</div></section>
+
+<section class="card"><h2>۸. اجزای فایل Object <span class="tag">احتمال خیلی بالا</span></h2>
+<table><tr><th>بخش</th><th>محتوا / وظیفه</th></tr>
+<tr><td><b>Header</b></td><td>اندازه و مکان شروع سایر قسمت‌ها.</td></tr>
+<tr><td><b>Text Segment</b></td><td>دستورها به زبان ماشین.</td></tr>
+<tr><td><b>Data Segment</b></td><td>داده‌ها به صورت باینری.</td></tr>
+<tr><td><b>Relocation Information</b></td><td>دستورها و داده‌هایی که به آدرس مطلق نیاز دارند.</td></tr>
+<tr><td><b>Symbol Table</b></td><td>آدرس‌ها، برچسب‌های خارجی و فهرست ارجاع‌های حل‌نشده.</td></tr>
+<tr><td><b>Debugging Information</b></td><td>اطلاعات مربوط به دیباگ.</td></tr></table>
+<div class="callout"><b>ترفند حفظی:</b> Header = نقشه و اندازه؛ Text = کد؛ Data = داده؛ Relocation = آدرس‌دهی؛ Symbol = نمادها و ارجاع‌ها؛ Debugging = اطلاعات اشکال‌زدایی.</div></section>
+
+<section class="card"><h2>۹. Linker و Link Libraries <span class="tag">احتمال بالا</span></h2>
+<ul><li>برای تولید برنامه قابل اجرا، در کنار اسمبلر به Linker نیاز است.</li><li>یک برنامه می‌تواند از چند برنامه یا چند فایل کد تشکیل شود.</li><li>اسمبلر هر فایل کد را جداگانه به فایل Object تبدیل می‌کند.</li><li>Linker فایل‌های Object را با سایر فایل‌های Object و Link Libraryها ادغام می‌کند.</li><li>خروجی Linker یک فایل قابل اجرا (Executable File) است.</li></ul>
+<div class="callout"><b>نکته شکل صفحات ۲۳ و ۲۴:</b> چند Source File جداگانه → هرکدام توسط Assembler به Object File تبدیل می‌شوند → Objectها به همراه Link Libraries وارد Linker می‌شوند → یک Executable File ساخته می‌شود.</div>
+<h3>Relocation و Jump/Link در شکل</h3><p>در شکل صفحه ۲۳، فایل Object شامل دستورهای فراخوانی و رکوردهای Relocation است. Linker آدرس‌های لازم را با درنظرگرفتن فایل‌های دیگر و کتابخانه حل می‌کند؛ در خروجی اجرایی، فراخوانی‌های نامشخص با مقصدهای مشخص مانند <span class="ltr">printf</span> و <span class="ltr">sub</span> جایگزین شده‌اند.</p></section>
+
+<section class="card"><h2>۱۰. Loader، Debugger و Editor</h2>
+<h3>Loader</h3><p>قسمتی از سیستم‌عامل است که فایل قابل اجرا را از حافظه جانبی به حافظه RAM منتقل می‌کند و اجرای آن را آغاز می‌کند.</p>
+<h3>Debugger</h3><ul><li>برای Trace کردن برنامه استفاده می‌شود.</li><li>می‌توان کد برنامه، حافظه و مقادیر ثبات‌ها (Registers) را مشاهده کرد.</li></ul>
+<h3>Editor</h3><ul><li>برای ساخت Source Code استفاده می‌شود.</li><li>بعضی Editorها ویژگی نمایش Syntax دارند.</li></ul>
+<div class="callout"><b>سه‌گانه‌ای که قاطی نشود:</b> Editor کد را می‌نویسد؛ Debugger اجرای برنامه و وضعیت حافظه/ثبات‌ها را بررسی می‌کند؛ Loader فایل اجرایی را در RAM بارگذاری و اجرا را شروع می‌کند.</div></section>
+
+<section class="card"><h2>۱۱. پرسش‌های احتمالی امتحان با جواب</h2>
+<ol>
+<li><b>زبان سطح بالا چه ویژگی‌هایی دارد؟</b><br>خوانایی و سرعت برنامه‌نویسی بیشتر، دستورهای کمتر، عیب‌یابی ساده‌تر و قابلیت انتقال بهتر بین ماشین‌ها.</li>
+<li><b>چرا اسمبلی وابسته به ماشین است؟</b><br>چون هر خانواده پردازنده دستورهای اسمبلی مخصوص خود را دارد.</li>
+<li><b>زبان اسمبلی از چه نمادهایی استفاده می‌کند؟</b><br>از نام‌های سمبولیک برای عملگرها، ثبات‌ها و خانه‌های حافظه.</li>
+<li><b>چرا از اسمبلی استفاده می‌کنیم؟</b><br>مصرف حافظه کمتر، سرعت اجرای بالاتر و امکان کنترل/تکنیک‌های سطح پایین.</li>
+<li><b>چه بخش‌هایی از برنامه ممکن است با اسمبلی بازنویسی شوند؟</b><br>بخش‌های بحرانی از نظر زمان اجرا.</li>
+<li><b>چه نوع برنامه‌هایی تقریباً همیشه با اسمبلی نوشته می‌شوند؟</b><br>برنامه‌های سیستمی و درایورهای سخت‌افزار (طبق اسلاید).</li>
+<li><b>Compiler چه کاری انجام می‌دهد؟</b><br>دستورات زبان سطح بالا را به زبان اسمبلی ترجمه می‌کند.</li>
+<li><b>Assembler چه کاری انجام می‌دهد؟</b><br>کد اسمبلی را به زبان ماشین ترجمه و فایل Object تولید می‌کند.</li>
+<li><b>دو گذر اسمبلر را توضیح دهید.</b><br>گذر اول: خواندن خط‌به‌خط و ذخیره Labelها در Symbol Table؛ گذر دوم: استفاده از جدول و تولید کد ماشین.</li>
+<li><b>شش بخش فایل Object کدام‌اند؟</b><br>Header، Text Segment، Data Segment، Relocation Information، Symbol Table و Debugging Information.</li>
+<li><b>وظیفه Linker چیست؟</b><br>ادغام فایل‌های Object با سایر Objectها و کتابخانه‌ها و تولید فایل اجرایی.</li>
+<li><b>وظیفه Loader چیست؟</b><br>انتقال فایل اجرایی از حافظه جانبی به RAM و آغاز اجرای آن.</li>
+<li><b>Debugger چه اطلاعاتی را نمایش می‌دهد؟</b><br>کد، حافظه و مقادیر ثبات‌ها را برای Trace برنامه.</li>
+<li><b>Editor چیست؟</b><br>ابزاری برای ساخت Source Code؛ برخی از آن‌ها Syntax را نیز نمایش می‌دهند.</li>
+<li><b>تفاوت فایل Object و Executable چیست؟</b><br>Object خروجی اسمبلر است و ممکن است هنوز به فایل‌ها و کتابخانه‌های دیگر نیاز داشته باشد؛ Linker آن‌ها را ادغام می‌کند و فایل اجرایی می‌سازد.</li>
+</ol></section>
+
+<section class="card"><h2>۱۲. چک‌لیست مرور آخر</h2>
+<label><input type="checkbox"> ترتیب زبان سطح بالا، اسمبلی، ماشین و سخت‌افزار را بلدم.</label>
+<label><input type="checkbox"> تفاوت وابستگی به ماشین در زبان‌ها را می‌توانم توضیح دهم.</label>
+<label><input type="checkbox"> ویژگی‌ها و تعریف زبان اسمبلی را حفظ هستم.</label>
+<label><input type="checkbox"> مزایای زبان سطح بالا و محدودیت Portability اسمبلی را بلدم.</label>
+<label><input type="checkbox"> فواید و دلایل استفاده از اسمبلی را می‌توانم نام ببرم.</label>
+<label><input type="checkbox"> وظیفه هر شش ابزار Compiler، Assembler، Linker، Loader، Debugger و Editor را می‌دانم.</label>
+<label><input type="checkbox"> تفاوت Compiler و Assembler را توضیح می‌دهم.</label>
+<label><input type="checkbox"> دو گذر Assembler و نقش Symbol Table را حفظ هستم.</label>
+<label><input type="checkbox"> شش بخش Object File و وظیفه هرکدام را می‌دانم.</label>
+<label><input type="checkbox"> مراحل تبدیل چند Source File به Executable را بلدم.</label>
+<label><input type="checkbox"> تفاوت Loader، Debugger و Editor را قاطی نمی‌کنم.</label>
+</section>
+
+<section class="card"><h2>۱۳. مرور صفحه‌به‌صفحه Micro2.pdf</h2>
+<table><tr><th>صفحه PDF</th><th>موضوع</th></tr>
+<tr><td>۱</td><td>عنوان: آشنایی با زبان اسمبلی.</td></tr>
+<tr><td>۲–۳</td><td>سلسله‌مراتب برنامه، زبان سطح بالا، اسمبلی، ماشین و سخت‌افزار؛ وابستگی به ماشین.</td></tr>
+<tr><td>۴–۶</td><td>ویژگی زبان‌های سطح بالا و ماشین؛ تعریف و ویژگی‌های زبان اسمبلی.</td></tr>
+<tr><td>۷–۹</td><td>مثال جمع دو عدد در C، اسمبلی و نمایش باینری دستورها.</td></tr>
+<tr><td>۱۰</td><td>فواید زبان سطح بالا و مقایسه با زبان سطح پایین.</td></tr>
+<tr><td>۱۱–۱۲</td><td>فواید زبان اسمبلی و دلایل استفاده از آن.</td></tr>
+<tr><td>۱۳</td><td>فهرست ابزارهای برنامه‌نویسی: Compiler، Assembler، Linker، Loader، Debugger، Editor.</td></tr>
+<tr><td>۱۴</td><td>تعریف Compiler.</td></tr>
+<tr><td>۱۵</td><td>تعریف Assembler و دو گذر آن.</td></tr>
+<tr><td>۱۶</td><td>نمودار مقایسه Assembler و Compiler.</td></tr>
+<tr><td>۱۷</td><td>ساختار و اجزای Object File.</td></tr>
+<tr><td>۱۸–۱۹</td><td>Linker، Link Libraries، ادغام Objectها و شکل فرایند لینک.</td></tr>
+<tr><td>۲۰</td><td>Loader.</td></tr>
+<tr><td>۲۱</td><td>Debugger.</td></tr>
+<tr><td>۲۲</td><td>Editor.</td></tr>
+</table>
+<div class="info"><b>یادآوری:</b> شماره‌هایی که بالای اسلایدها دیده می‌شوند (مثل 17 تا 27) شماره‌گذاری خود اسلایدها هستند؛ جدول بالا شماره صفحه واقعی PDF از ۱ تا ۲۲ را نشان می‌دهد.</div></section>
+</main><footer>جزوه Micro 2 • تهیه‌شده بر اساس فایل ۲۲ صفحه‌ای Micro2.pdf</footer>
+<script>
+const q=document.getElementById('q');function filter(){const s=q.value.trim().toLowerCase();document.querySelectorAll('#main>.card').forEach(c=>c.classList.toggle('hide',!!s&&!c.innerText.toLowerCase().includes(s)))}q.addEventListener('input',filter);
+</script></body></html>

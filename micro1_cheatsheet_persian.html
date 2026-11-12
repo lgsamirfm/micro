@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جزوه شب امتحان | ریزپردازنده و میکروکنترلر</title>
+<style>
+:root{--ink:#17232d;--muted:#60717c;--paper:#fff;--bg:#f1f4f5;--red:#b94f3b;--teal:#24665e;--line:#dce4e7;--soft:#fff2ed;--mint:#edf7f4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/2 Tahoma,Arial,sans-serif}
+header{background:linear-gradient(120deg,#233c40,#49736a);color:#fff;padding:34px 18px}
+.wrap{max-width:1000px;margin:auto;padding:0 16px}h1{font-size:32px;margin:0}header p{margin:5px 0;color:#e1ece9}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pill{border:1px solid #ffffff55;border-radius:30px;padding:3px 11px;font-size:12px}
+nav{position:sticky;top:0;z-index:3;background:#ffffffed;border-bottom:1px solid var(--line);padding:9px 0;backdrop-filter:blur(7px)}
+.tools{display:flex;gap:8px}.tools input{flex:1;min-width:100px;border:1px solid var(--line);border-radius:9px;padding:9px 12px;font:inherit}
+button{border:0;border-radius:9px;padding:8px 13px;background:var(--red);color:#fff;font:inherit;cursor:pointer}.secondary{background:#e7efed;color:#24574f}
+main{padding:22px 0 45px}.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:19px;margin:14px 0;box-shadow:0 4px 16px #132b3208}
+h2{font-size:21px;color:var(--red);margin:0 0 12px;padding-bottom:7px;border-bottom:2px solid #f0d9d2}
+h3{font-size:17px;color:var(--teal);margin:17px 0 6px}p{margin:7px 0}ul,ol{padding-right:24px;margin:5px 0}li{margin:3px 0}
+.high,.note{padding:10px 13px;border-radius:9px;margin:11px 0}.high{background:var(--soft);border-right:4px solid var(--red)}.note{background:var(--mint);border-right:4px solid var(--teal)}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}td,th{border:1px solid var(--line);padding:8px;text-align:right;vertical-align:top}th{background:#edf3f2;color:#24574f}
+.ltr{direction:ltr;unicode-bidi:embed;font-family:Consolas,monospace;background:#f0f3f6;padding:1px 5px;border-radius:4px;display:inline-block}
+.tag{font-size:11px;color:#98402e;background:#fbe6df;border-radius:6px;padding:1px 7px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.mini{background:#f8fafb;border:1px solid var(--line);padding:11px;border-radius:10px}
+.small{font-size:12px;color:var(--muted)}.check label{display:block;margin:6px 0}.check input{accent-color:var(--red);margin-left:8px}
+.hide{display:none!important}footer{text-align:center;color:var(--muted);padding:20px}
+@media print{body{background:#fff;font-size:11pt}nav{display:none}header{background:#fff;color:#111;border-bottom:2px solid #555;padding:15px}header p{color:#333}.pill{border-color:#999}.card{box-shadow:none;break-inside:avoid;margin:8px 0;padding:12px}h2{font-size:16pt}.wrap{max-width:none;padding:0 7px}button{display:none}}
+</style></head>
+<body>
+<header><div class="wrap"><h1>جزوه فشرده و امتحانی</h1><p>ریزپردازنده و زبان اسمبلی | آشنایی با میکروکنترلرها و خانواده 8051</p>
+<div class="pills"><span class="pill">بررسی تمام ۳۳ صفحه PDF</span><span class="pill">شامل نکات نمودارها و جدول‌ها</span><span class="pill">مرور + پرسش و پاسخ</span></div></div></header>
+<nav><div class="wrap tools"><input id="q" placeholder="جست‌وجو در جزوه..."><button onclick="print()">چاپ / ذخیره PDF</button><button class="secondary" onclick="q.value='';filter()">پاک‌کردن</button></div></nav>
+<main class="wrap" id="main">
+<section class="card"><h2>نقشه راه مطالعه</h2>
+<p>محتوا بر اساس متن و شکل‌های هر ۳۳ صفحه فایل اصلی استخراج شده است. «احتمال بالا» یعنی موضوع در اسلایدها تعریف، مقایسه، مرحله‌بندی یا عدد مشخص دارد؛ پیش‌بینی قطعی از امتحان نیست.</p>
+<div class="high"><b>اولویت اول:</b> تفاوت ریزپردازنده و میکروکنترلر، چرخه دستور و اجزای CPU، مراحل Fetch، انواع ROM، سه باس و محاسبه 64K، مشخصات 8051 و جدول مقایسه 8051/8052/8031.</div>
+<div class="note"><b>نکته درباره عنوان درس:</b> با وجود عنوان «زبان اسمبلی»، این فایل ۳۳ صفحه‌ای عمدتاً مقدمه معماری، حافظه، باس و میکروکنترلر 8051 است. دستورهای اسمبلی و مثال برنامه‌نویسی در این PDF آموزش داده نشده‌اند؛ پس در این جزوه مطلب خارج از فایل به‌عنوان محتوای تدریس‌شده اضافه نشده است.</div></section>
+
+<section class="card"><h2>۱. ریزپردازنده و میکروکنترلر <span class="tag">احتمال بالا</span></h2>
+<h3>ریزپردازنده (Microprocessor)</h3><ul>
+<li>با نمادهای <b>μP</b> یا <b>CPU</b> شناخته می‌شود و روی یک تراشه <b>IC</b> قرار دارد.</li>
+<li>هسته اصلی پردازش در کامپیوتر، تلفن همراه، خودرو و بسیاری از وسایل الکترونیکی است.</li>
+<li>اولین ریزپردازنده تجاری موفق دنیا را Intel ساخت: <b>Intel 4004</b> در ۱۹۷۱ با ۴ بیت و <b>Intel 8008</b> در ۱۹۷۲ با ۸ بیت.</li>
+<li>پس از آن ریزپردازنده‌های ۱۶، ۳۲، ۶۴ بیتی و چند‌هسته‌ای معرفی شدند.</li></ul>
+<h3>میکروکنترلر (Microcontroller)</h3><ul><li>با نمادهای <b>μC</b> یا <b>MCU</b>؛ یک کامپیوتر کوچک روی یک IC.</li><li>اجزای اصلی: CPU، RAM، ROM، پورت‌های I/O، تایمرها و سایر وسایل جانبی.</li><li>طبق اسلاید، اولین میکروکنترلر دنیا در سال ۱۹۷۶ توسط Intel با شماره <b>8748</b> ساخته شد.</li></ul>
+<table><tr><th>ریزپردازنده</th><th>میکروکنترلر</th></tr>
+<tr><td>قدرت پردازش و توان کار با داده‌های بزرگ‌تر بیشتر است.</td><td>برای کاربرد مشخص و کنترل یک وظیفه مناسب است.</td></tr>
+<tr><td>مدهای آدرس‌دهی و تنوع دستورها بیشتر است.</td><td>منابع و امکانات مشخص و معمولاً محدودتر دارد.</td></tr>
+<tr><td>برای استفاده معمولاً باید RAM، ROM، I/O و تایمر به آن اضافه شود.</td><td>RAM، ROM، پورت‌ها و تایمرها روی تراشه تعبیه شده‌اند.</td></tr>
+<tr><td>انعطاف‌پذیر؛ می‌توان اجزای متفاوتی به آن متصل کرد.</td><td>مقدار RAM/ROM و تعداد پورت‌ها معمولاً ثابت است.</td></tr>
+<tr><td>سیستم حجیم‌تر و گران‌تر می‌شود.</td><td>برای فضا، هزینه و توان مصرفی محدود مناسب است؛ مناسب Embedded.</td></tr></table>
+<div class="high"><b>حفظی:</b> قدرت پردازش و انعطاف بیشتر ← ریزپردازنده. هزینه، فضا و مصرف انرژی کمتر برای کار مشخص ← میکروکنترلر.</div>
+<p class="small">شکل صفحه ۷ تفاوت را به‌صورت بلوکی نشان می‌دهد: در ریزپردازنده RAM/ROM/I/O/Timer اجزای جداگانه‌اند؛ در میکروکنترلر همه در یک مجموعه قرار دارند.</p></section>
+
+<section class="card"><h2>۲. سیستم‌های Embedded و PC</h2>
+<table><tr><th>سیستم Embedded</th><th>کامپیوتر PC</th></tr>
+<tr><td>برای انجام همیشگی یک کار مشخص طراحی می‌شود؛ مثال: پرینتر.</td><td>برای اجرای برنامه‌های مختلف استفاده می‌شود.</td></tr>
+<tr><td>می‌تواند از ریزپردازنده یا میکروکنترلر استفاده کند.</td><td>سیستم‌عامل کد برنامه‌ها را به RAM می‌آورد و CPU اجرا می‌کند.</td></tr>
+<tr><td>معمولاً یک برنامه در ROM قرار می‌گیرد.</td><td>برنامه‌های متنوع در زمان اجرا در RAM قرار می‌گیرند.</td></tr>
+<tr><td>کیبورد و مانیتور هم می‌توانند سیستم Embedded باشند.</td><td>یک PC می‌تواند از چند سیستم Embedded تشکیل شده یا به آن‌ها متصل باشد.</td></tr></table>
+<div class="high"><b>پاسخ تشریحی آماده:</b> Embedded برای انجام یک کار مشخص و ثابت طراحی می‌شود و معمولاً برنامه آن در ROM است؛ PC چندمنظوره است و برنامه‌های مختلف را از RAM اجرا می‌کند.</div>
+<h3>کاربردهای میکروکنترلر</h3><div class="grid">
+<div class="mini"><b>خانه:</b> لوازم خانگی، تلفن، سیستم امنیتی، دربازکن پارکینگ، تلویزیون، کنترل از راه دور، دوربین، اسباب‌بازی و ماشین لباس‌شویی.</div>
+<div class="mini"><b>اداره:</b> تلفن، کامپیوتر، فکس، مایکروویو، دستگاه کپی و چاپگر لیزری/رنگی.</div>
+<div class="mini"><b>خودرو:</b> کنترل موتور، ایربگ، ABS، نمایشگرها، امنیت، گیربکس، تهویه و ورود بدون کلید.</div></div></section>
+
+<section class="card"><h2>۳. CPU، چرخه دستور و Instruction Set <span class="tag">احتمال بالا</span></h2>
+<p>CPU هسته اصلی کامپیوتر است و تمام عملیات روی داده‌ها را انجام می‌دهد.</p>
+<h3>چهار مرحله چرخه دستور</h3><ol><li><b>Fetch (واکشی):</b> آوردن دستور از حافظه؛ در کامپیوتر از RAM و در میکروکنترلر از ROM.</li><li><b>Decode (رمزگشایی):</b> تشخیص/دیکد کردن دستور.</li><li><b>Execute (اجرا):</b> اجرای دستور.</li><li><b>Write Back (ذخیره نتیجه):</b> ذخیره نتایج عملیات.</li></ol>
+<h3>مجموعه دستورات (Instruction Set)</h3><p>مجموعه‌ای از کدهای باینری که عملیات ساده قابل فهم و اجرا توسط CPU را نشان می‌دهد:</p>
+<ul><li>ریاضی: جمع، تفریق، ضرب، تقسیم.</li><li>منطقی: AND، OR، NOT و مانند آن‌ها.</li><li>انتقال داده.</li><li>پرش.</li></ul>
+<p><b>CISC:</b> Complex Instruction Set Computer — مجموعه دستورات پیچیده.</p><p><b>RISC:</b> Reduced Instruction Set Computer — مجموعه دستورات کاهش‌یافته.</p>
+<h3>اجزای CPU و وظایف</h3><table><tr><th>جزء</th><th>نام کامل</th><th>وظیفه</th></tr>
+<tr><td>ثبات‌ها (Registers)</td><td>—</td><td>نگهداری موقت اطلاعات.</td></tr>
+<tr><td>ALU</td><td>Arithmetic and Logic Unit</td><td>اجرای عملیات محاسباتی و منطقی روی داده‌ها.</td></tr>
+<tr><td>PC</td><td>Program Counter</td><td>نگهداری آدرس دستور بعدی در حافظه.</td></tr>
+<tr><td>IR</td><td>Instruction Register</td><td>نگهداری کد باینری دستور فعلی.</td></tr>
+<tr><td>Instruction Decoder / Control Unit</td><td>دیکدر دستور و واحد کنترل</td><td>تشخیص نوع دستور و صدور فرمان‌های لازم برای اجرا.</td></tr></table>
+<div class="high"><b>حفظی یک‌خطی:</b> PC = آدرس دستور بعدی؛ IR = کد دستور فعلی؛ ALU = محاسبه و منطق؛ Registers = نگهداری موقت؛ Control Unit = کنترل اجرای دستور.</div>
+<p class="small">صفحه ۱۴ شکل بلوکی CPU را نشان می‌دهد که PC، IR، ثبات‌ها، دیکدر/واحد کنترل و ALU را داخل CPU قرار می‌دهد.</p></section>
+
+<section class="card"><h2>۴. واکشی دستور (Fetch) — مراحل دقیق <span class="tag">احتمال بالا</span></h2>
+<ol><li>محتوای شمارنده برنامه <b>PC</b> روی <b>باس آدرس</b> قرار می‌گیرد.</li><li>سیگنال کنترلی <b>READ</b> فعال می‌شود.</li><li>محتوای خانه‌ای که PC به آن اشاره می‌کند از حافظه خوانده شده و روی <b>باس داده</b> قرار می‌گیرد.</li><li>در آن خانه کد اجرایی دستور یا <b>Opcode</b> قرار دارد.</li><li>Opcode وارد ثبات دستور <b>IR</b> در CPU می‌شود.</li><li>یک واحد به <b>PC</b> اضافه می‌شود تا برای واکشی بعدی آماده باشد.</li></ol>
+<div class="high"><b>ترتیب را حفظ کن:</b> PC → باس آدرس → READ → خواندن Opcode از حافظه → باس داده → IR → افزایش PC به یک واحد.</div>
+<p class="small">شکل صفحه ۱۷ مسیر را با آدرس N نشان می‌دهد: Opcode از خانه N خوانده و به IR منتقل می‌شود و شمارنده برای واکشی بعدی جلو می‌رود. در شکل، خانه‌های N−1، N، N+1 و N+2 دیده می‌شوند.</p></section>
+
+<section class="card"><h2>۵. حافظه و انواع ROM <span class="tag">احتمال بالا</span></h2>
+<table><tr><th>RAM</th><th>ROM</th></tr><tr><td>Random Access Memory؛ حافظه موقتی (Temporary)؛ با قطع برق اطلاعات پاک می‌شود.</td><td>Read Only Memory؛ حافظه غیرفرار (Nonvolatile)؛ با قطع برق اطلاعات پاک نمی‌شود.</td></tr></table>
+<h3>معماری Von Neumann و Harvard</h3><table><tr><th>Von Neumann</th><th>Harvard</th></tr><tr><td>حافظه برنامه و داده مشترک است.</td><td>حافظه برنامه و داده جدا هستند؛ در شکل اسلاید، RAM برای داده و ROM برای برنامه آمده است.</td></tr></table>
+<h3>انواع ROM</h3><table><tr><th>نوع</th><th>روش پاک‌کردن / ویژگی</th></tr>
+<tr><td><b>PROM / OTPROM</b></td><td>One-Time Programmable؛ طبق اسلاید راهی برای پاک‌کردن داده وجود ندارد.</td></tr>
+<tr><td><b>EPROM / UVEPROM</b></td><td>با نور فرابنفش (UV) پاک می‌شود؛ هر بار ۳۰ تا ۴۵ دقیقه.</td></tr>
+<tr><td><b>EEPROM</b></td><td>بیت‌به‌بیت پاک می‌شود؛ در اسلاید گفته شده سلول‌ها صفر می‌شوند؛ زمان پاک‌کردن زیاد است.</td></tr>
+<tr><td><b>Flash</b></td><td>شبیه EEPROM ولی در بلوک‌های بزرگ پاک می‌شود؛ پاک‌کردن سریع‌تر است؛ عمر سلول‌ها کوتاه‌تر می‌شود؛ گاهی یک بلوک می‌تواند کل حافظه باشد.</td></tr>
+<tr><td><b>NVRAM</b></td><td>Nonvolatile RAM؛ با قطع برق اطلاعات باقی می‌ماند؛ سرعت نوشتن به اندازه خواندن است.</td></tr></table>
+<div class="high"><b>دام امتحانی:</b> EPROM ← نور UV؛ EEPROM ← بیت‌به‌بیت؛ Flash ← بلوکی؛ PROM/OTPROM ← یک‌بار برنامه‌ریزی و پاک‌نشدنی. زمان EPROM در اسلاید ۳۰–۴۵ دقیقه است.</div>
+<p class="small">صفحه ۱۹ نمودارهای Von Neumann و Harvard را کنار هم قرار داده؛ صفحه ۲۰ روش پاک‌کردن انواع ROM را مقایسه می‌کند.</p></section>
+
+<section class="card"><h2>۶. باس آدرس، داده و کنترل <span class="tag">احتمال بالا</span></h2>
+<p>باس (Bus) مجموعه‌ای از سیم‌هاست که اطلاعات از طریق آن‌ها منتقل می‌شود.</p>
+<table><tr><th>باس</th><th>وظیفه</th></tr><tr><td><b>Address Bus</b></td><td>انتقال آدرس خانه حافظه موردنظر.</td></tr><tr><td><b>Data Bus</b></td><td>انتقال خود داده بین CPU و حافظه/اجزا.</td></tr><tr><td><b>Control Bus</b></td><td>انتقال سیگنال‌های کنترلی؛ مانند READ و WRITE.</td></tr></table>
+<h3>خواندن از حافظه</h3><ol><li>CPU آدرس داده موردنظر را روی باس آدرس قرار می‌دهد.</li><li>سیگنال READ از طریق باس کنترل فعال می‌شود.</li><li>اطلاعات از آدرس مشخص‌شده خوانده و روی باس داده قرار می‌گیرد.</li></ol>
+<h3>نوشتن در حافظه</h3><ol><li>CPU داده را روی باس داده قرار می‌دهد.</li><li>CPU آدرس محل ذخیره را روی باس آدرس قرار می‌دهد.</li><li>سیگنال نوشتن روی باس کنترل فعال می‌شود و داده در خانه موردنظر نوشته می‌شود.</li></ol>
+<div class="high"><b>تفاوت کلیدی:</b> در خواندن، داده از حافظه به باس داده می‌آید؛ در نوشتن، CPU داده را روی باس داده قرار می‌دهد.</div>
+<h3>محاسبه تعداد بیت باس آدرس</h3><p>مثال خود اسلاید: حافظه 64K خانه دارد.</p><p class="ltr">64K = 2⁶ × 2¹⁰ = 2¹⁶</p><p>بنابراین برای آدرس‌دهی 64K خانه، باس آدرس <b>۱۶ بیتی</b> لازم است.</p>
+<p>اگر هر خانه حافظه ۸ بیتی باشد، باس داده <b>۸ بیتی</b> است.</p>
+<div class="note"><b>قاعده کلی:</b> اگر حافظه \(2^n\) خانه آدرس‌پذیر داشته باشد، n بیت آدرس لازم است. تعداد بیت باس داده با تعداد بیت داده‌ای که در هر انتقال جابه‌جا می‌شود مرتبط است.</div>
+<p>طبق اسلاید، افزایش تعداد بیت‌های باس داده سرعت انتقال اطلاعات و توان سیستم را بیشتر می‌کند. 8051 هشت‌بیتی است؛ نمونه‌های ۸، ۱۶، ۳۲ و ۶۴ بیتی ذکر شده‌اند.</p></section>
+
+<section class="card"><h2>۷. وسایل ورودی و خروجی (I/O)</h2><p>ارتباط کامپیوتر با دنیای خارج را برقرار می‌کنند. سه گروه اصلی:</p>
+<table><tr><th>گروه</th><th>مثال‌ها</th></tr><tr><td>دستگاه‌های ذخیره اطلاعات</td><td>Disk، CD-ROM، Flash Memory</td></tr><tr><td>دستگاه‌های واسط کاربر</td><td>کیبورد، ماوس، مانیتور، پرینتر، بلندگو</td></tr><tr><td>دستگاه‌های کنترل و نظارت</td><td>سنسورها و محرک‌ها (Actuators)</td></tr></table>
+<div class="high"><b>سؤال رایج:</b> سه نوع دستگاه I/O را نام ببرید و برای هرکدام مثال بزنید.</div></section>
+
+<section class="card"><h2>۸. معیارهای انتخاب میکروکنترلر</h2>
+<h3>۱) کارایی و هزینه متناسب با هدف</h3><ul><li>سرعت و اندازه میکروکنترلر.</li><li>مصرف انرژی.</li><li>مقدار RAM و ROM روی تراشه.</li><li>تعداد پین‌های ورودی/خروجی و تعداد تایمرها.</li><li>سهولت ارتقا به مدل قوی‌تر یا کاهش توان مصرفی.</li><li>قیمت هر واحد.</li></ul>
+<h3>۲) ابزارهای برنامه‌نویسی</h3><p>وجود کامپایلرها، دیباگرها و اسمبلرها برای برنامه‌نویسی میکروکنترلر.</p>
+<h3>۳) منابع و پشتیبانی سازندگان</h3><p>وجود منابع متنوع و قابل اعتماد. سازندگان خانواده 8051 در اسلاید: Intel (سازنده اصلی)، Atmel، Philips، AMD، Infineon، Matra و Dallas Semiconductor / Maxim.</p>
+<div class="high"><b>پاسخ تشریحی:</b> سه دسته معیار: مشخصات و هزینه سخت‌افزار، ابزارهای توسعه نرم‌افزار، منابع و پشتیبانی سازندگان.</div></section>
+
+<section class="card"><h2>۹. میکروکنترلر 8051 — اعداد طلایی <span class="tag">احتمال بالا</span></h2>
+<p>8051 یک پردازنده <b>۸ بیتی</b> است؛ یعنی باس داده آن ۸ بیتی است و CPU در هر زمان داده ۸ بیتی را پردازش می‌کند.</p>
+<table><tr><th>ویژگی</th><th>8051</th></tr><tr><td>باس داده / پردازنده</td><td><b>۸ بیت</b></td></tr><tr><td>RAM روی تراشه</td><td><b>۱۲۸ بایت</b></td></tr><tr><td>ROM روی تراشه</td><td><b>۴ کیلوبایت</b></td></tr><tr><td>تایمر</td><td><b>۲ عدد</b></td></tr><tr><td>پورت سریال</td><td><b>۱ عدد</b></td></tr><tr><td>پورت I/O</td><td><b>۴ پورت، هرکدام ۸ بیت</b>؛ مجموعاً ۳۲ پایه I/O</td></tr><tr><td>منابع وقفه</td><td><b>۶ منبع</b></td></tr></table>
+<div class="high"><b>حفظ کن:</b> 8051 = 8-bit / 128B RAM / 4KB ROM / 2 Timers / 1 Serial / 4×8-bit I/O / 6 Interrupt sources.</div>
+<p class="small">شکل بلوکی صفحه ۳۰ اجزای داخلی را نمایش می‌دهد: CPU، ROM برنامه، RAM، تایمرهای ۰ و ۱، پورت‌های P0 تا P3، پورت سریال TXD/RXD، کنترل وقفه، نوسان‌ساز OSC و Bus Control.</p></section>
+
+<section class="card"><h2>۱۰. مقایسه خانواده 8051، 8052 و 8031 <span class="tag">نکته مهم تصویری</span></h2>
+<p>جدول صفحه ۳۱ PDF اطلاعاتی دارد که در متن ساده به‌خوبی استخراج نشده بود؛ اعداد جدول را دقیق مرور کن:</p>
+<table><tr><th>ویژگی</th><th>8051</th><th>8052</th><th>8031</th></tr>
+<tr><td>ROM برنامه روی تراشه</td><td>4K</td><td><b>8K</b></td><td><b>0K</b></td></tr>
+<tr><td>RAM</td><td>128 بایت</td><td><b>256 بایت</b></td><td>128 بایت</td></tr>
+<tr><td>تایمر</td><td>2</td><td><b>3</b></td><td>2</td></tr>
+<tr><td>پایه‌های I/O</td><td>32</td><td>32</td><td>32</td></tr>
+<tr><td>پورت سریال</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>منابع وقفه</td><td>6</td><td><b>8</b></td><td>6</td></tr></table>
+<ul><li>8051 زیرمجموعه‌ای از 8052 است.</li><li>8031 یک 8051 بدون ROM داخلی است؛ باید ROM خارجی به آن اضافه شود.</li><li>برای اتصال ROM خارجی در 8031 دو پورت I/O استفاده می‌شود و فقط دو پورت برای کاربردهای دیگر آزاد می‌ماند.</li></ul>
+<div class="high"><b>مقایسه سریع:</b> 8052 نسبت به 8051 حافظه ROM و RAM بیشتر، یک تایمر بیشتر و دو منبع وقفه بیشتر دارد. 8031 حافظه ROM داخلی ندارد.</div></section>
+
+<section class="card"><h2>۱۱. مدل‌های دیگر خانواده 8051</h2>
+<table><tr><th>مدل</th><th>ویژگی کلیدی</th></tr>
+<tr><td><b>8751</b></td><td>دارای UV-EPROM؛ برای پاک‌کردن برنامه روی ROM به PROM burner نیاز دارد؛ هر بار پاک‌کردن طبق اسلاید ۲۰ دقیقه طول می‌کشد.</td></tr>
+<tr><td><b>AT89C51</b></td><td>از Atmel؛ دارای Flash؛ قبل از نوشتن تمام اطلاعات پاک می‌شود؛ ROM burner باید Flash را پشتیبانی کند.</td></tr>
+<tr><td><b>DS89C4x0</b></td><td>از Dallas Semiconductor؛ دارای Flash و on-chip loader؛ نوشتن برنامه روی Flash از طریق پورت COM کامپیوتر.</td></tr>
+<tr><td><b>DS5000</b></td><td>از Dallas Semiconductor؛ دارای NV-RAM و همراه on-chip loader.</td></tr>
+<tr><td><b>8051 OTP</b></td><td>نسخه One-Time Programmable.</td></tr>
+<tr><td><b>Philips 8051</b></td><td>خانواده 8051 از شرکت Philips نیز در اسلاید نام برده شده است.</td></tr></table>
+<div class="high"><b>تطبیق نام و ویژگی:</b> 8751 = UV-EPROM و ۲۰ دقیقه؛ AT89C51 = Flash؛ DS89C4x0 = Flash + on-chip loader + COM؛ DS5000 = NV-RAM + on-chip loader.</div></section>
+
+<section class="card"><h2>۱۲. سؤالات احتمالی امتحان با پاسخ کوتاه</h2>
+<ol>
+<li><b>میکروکنترلر چیست و چه اجزایی دارد؟</b><br>کامپیوتر کوچکی روی IC شامل CPU، RAM، ROM، پورت‌های I/O، تایمرها و وسایل جانبی.</li>
+<li><b>دو تفاوت ریزپردازنده و میکروکنترلر چیست؟</b><br>ریزپردازنده معمولاً به حافظه و I/O خارجی نیاز دارد و انعطاف/قدرت بیشتری دارد؛ میکروکنترلر اجزای اصلی را روی تراشه دارد و برای کاربردهای کم‌هزینه و کم‌حجم مناسب است.</li>
+<li><b>سیستم Embedded چیست؟</b><br>سیستمی برای انجام یک کار مشخص و ثابت؛ معمولاً برنامه آن در ROM قرار می‌گیرد.</li>
+<li><b>مراحل چرخه دستور چیست؟</b><br>Fetch، Decode، Execute، Write Back.</li>
+<li><b>وظیفه PC و IR چیست؟</b><br>PC آدرس دستور بعدی را نگه می‌دارد؛ IR کد باینری دستور فعلی را نگه می‌دارد.</li>
+<li><b>ALU چه می‌کند؟</b><br>عملیات محاسباتی و منطقی را روی داده‌ها انجام می‌دهد.</li>
+<li><b>مراحل Fetch را توضیح دهید.</b><br>PC روی باس آدرس، فعال‌شدن READ، خواندن Opcode روی باس داده، انتقال به IR و افزایش PC به یک واحد.</li>
+<li><b>RAM و ROM چه تفاوتی دارند؟</b><br>RAM موقتی است و با قطع برق پاک می‌شود؛ ROM غیرفرار است.</li>
+<li><b>EEPROM و Flash چه تفاوتی دارند؟</b><br>EEPROM بیت‌به‌بیت و Flash در بلوک‌های بزرگ پاک می‌شود.</li>
+<li><b>Von Neumann و Harvard چه تفاوتی دارند؟</b><br>در اولی حافظه برنامه و داده مشترک و در دومی جداست.</li>
+<li><b>سه باس اصلی را نام ببرید.</b><br>Address برای آدرس، Data برای داده و Control برای سیگنال‌های کنترلی.</li>
+<li><b>برای 64K خانه حافظه چند بیت آدرس لازم است؟</b><br>۱۶ بیت، چون 64K = 2¹⁶.</li>
+<li><b>سه دسته دستگاه I/O چیست؟</b><br>ذخیره اطلاعات، واسط کاربر، کنترل و نظارت.</li>
+<li><b>معیارهای انتخاب میکروکنترلر چیست؟</b><br>کارایی/هزینه، ابزارهای توسعه و منابع/پشتیبانی سازنده.</li>
+<li><b>مشخصات 8051 چیست؟</b><br>۸ بیت، ۱۲۸ بایت RAM، ۴KB ROM، دو تایمر، یک پورت سریال، ۳۲ پایه I/O و شش منبع وقفه.</li>
+<li><b>تفاوت 8052 با 8051 چیست؟</b><br>8052 دارای 8KB ROM، 256B RAM، سه تایمر و هشت منبع وقفه است؛ در مقابل 8051 دارای 4KB ROM، 128B RAM، دو تایمر و شش منبع وقفه است.</li>
+<li><b>8031 چه تفاوتی با 8051 دارد؟</b><br>8031 فاقد ROM داخلی است و به ROM خارجی نیاز دارد؛ دو پورت I/O برای اتصال ROM مصرف می‌شود.</li>
+<li><b>DS89C4x0 چه ویژگی دارد؟</b><br>Flash و on-chip loader دارد و برنامه‌ریزی آن با پورت COM کامپیوتر انجام می‌شود.</li>
+</ol></section>
+
+<section class="card check"><h2>۱۳. چک‌لیست مرور نهایی</h2>
+<label><input type="checkbox"> تعریف و تفاوت Microprocessor و Microcontroller را بلدم.</label>
+<label><input type="checkbox"> تعریف Embedded و تفاوتش با PC را می‌توانم توضیح دهم.</label>
+<label><input type="checkbox"> چهار مرحله چرخه دستور را به ترتیب حفظ هستم.</label>
+<label><input type="checkbox"> وظایف PC، IR، ALU، Registers و Control Unit را می‌دانم.</label>
+<label><input type="checkbox"> مراحل Fetch را به ترتیب می‌گویم.</label>
+<label><input type="checkbox"> RAM، ROM، Von Neumann و Harvard را مقایسه می‌کنم.</label>
+<label><input type="checkbox"> انواع PROM، EPROM، EEPROM، Flash و NVRAM را از هم تشخیص می‌دهم.</label>
+<label><input type="checkbox"> سه باس و مراحل خواندن/نوشتن حافظه را بلدم.</label>
+<label><input type="checkbox"> محاسبه 64K = 2¹⁶ و باس آدرس ۱۶ بیتی را بلدم.</label>
+<label><input type="checkbox"> سه دسته I/O و مثال‌هایشان را حفظ هستم.</label>
+<label><input type="checkbox"> معیارهای انتخاب میکروکنترلر را نام می‌برم.</label>
+<label><input type="checkbox"> مشخصات عددی 8051 را بدون اشتباه می‌گویم.</label>
+<label><input type="checkbox"> جدول تفاوت 8051، 8052 و 8031 را بلدم.</label>
+<label><input type="checkbox"> ویژگی 8751، AT89C51، DS89C4x0 و DS5000 را تطبیق می‌دهم.</label>
+</section>
+
+<section class="card"><h2>۱۴. مرور صفحه‌به‌صفحه PDF</h2>
+<table><tr><th>صفحه PDF</th><th>موضوع</th></tr>
+<tr><td>۱–۲</td><td>عنوان درس و شروع آشنایی با میکروکنترلرها.</td></tr>
+<tr><td>۳–۴</td><td>تعریف و تاریخچه ریزپردازنده و میکروکنترلر؛ Intel 4004، 8008 و 8748.</td></tr>
+<tr><td>۵–۶</td><td>تصاویر میکروکنترلر و نمونه کاربرد در برد، کی‌پد، نمایشگر، خودرو و لوازم خانگی.</td></tr>
+<tr><td>۷–۸</td><td>نمودار ساختاری و مقایسه Microprocessor و Microcontroller.</td></tr>
+<tr><td>۹–۱۰</td><td>Embedded در برابر PC و کاربردهای خانه، اداره و خودرو.</td></tr>
+<tr><td>۱۱–۱۲</td><td>نمودار کلی ساختار کامپیوتر، CPU، باس‌ها، حافظه و رابط وسایل جانبی.</td></tr>
+<tr><td>۱۳–۱۵</td><td>چرخه دستور، Instruction Set، CISC/RISC و اجزای داخلی CPU.</td></tr>
+<tr><td>۱۶–۱۷</td><td>شرح مرحله‌به‌مرحله Fetch و شکل مسیر Opcode از حافظه به IR.</td></tr>
+<tr><td>۱۸–۲۰</td><td>حافظه، RAM/ROM، معماری Von Neumann و Harvard و انواع ROM.</td></tr>
+<tr><td>۲۱–۲۳</td><td>باس‌ها، مراحل خواندن/نوشتن، محاسبه 64K و پهنای باس.</td></tr>
+<tr><td>۲۴–۲۵</td><td>شکل وسایل I/O و سه دسته دستگاه ورودی/خروجی.</td></tr>
+<tr><td>۲۶</td><td>اسلاید تصویری/فاصله؛ متن مستقل ندارد. اسلاید بعدی شماره ۲۷ دارد.</td></tr>
+<tr><td>۲۷–۲۸</td><td>معیارهای انتخاب میکروکنترلر، ابزارهای توسعه و سازندگان 8051.</td></tr>
+<tr><td>۲۹–۳۰</td><td>مشخصات 8051 و نمودار بلوکی اجزای داخلی آن.</td></tr>
+<tr><td>۳۱</td><td>جدول عددی 8051/8052/8031 و توضیح ROM خارجی در 8031.</td></tr>
+<tr><td>۳۲–۳۳</td><td>مدل‌های 8751، AT89C51، DS89C4x0، DS5000، OTP و Philips.</td></tr>
+</table>
+<p class="small">صفحه پایانی PDF (صفحه ۳۳) منابع درس را معرفی می‌کند: کتاب میکروکنترلرهای خانواده 8051، اسکات مکنزی، ترجمه دکتر حسن سیدرضی، ویرایش سوم؛ و کتاب The 8051 Microcontroller and Embedded Systems using Assembly and C، نوشته محمدعلی مزیدی، ویرایش دوم.</p></section>
+</main><footer>تهیه‌شده بر اساس فایل Micro1.pdf • موفق باشی 🌱</footer>
+<script>
+const q=document.getElementById('q');function filter(){let s=q.value.trim().toLowerCase();document.querySelectorAll('#main>.card').forEach(e=>e.classList.toggle('hide',s&&!e.innerText.toLowerCase().includes(s)))}q.addEventListener('input',filter);
+</script></body></html>

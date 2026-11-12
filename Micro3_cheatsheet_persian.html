@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جزوه شب امتحان Micro 3 — ریزپردازنده 8051</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+:root{--ink:#202a35;--muted:#64748b;--accent:#c65b45;--soft:#f4f6f8;--line:#dce2e8;--green:#176b55;--yellow:#fff5d8}
+*{box-sizing:border-box}body{margin:0;background:#eef1f4;color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.95}
+main{max-width:980px;margin:28px auto;background:#fff;padding:42px 54px;box-shadow:0 8px 35px #1e293b12}
+header{border-bottom:4px solid var(--accent);padding-bottom:22px;margin-bottom:26px}
+h1{font-size:2rem;margin:0;color:var(--accent)}.subtitle{color:var(--muted);margin-top:8px}
+h2{font-size:1.35rem;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:7px;margin-top:34px}
+h3{font-size:1.05rem;margin:20px 0 8px;color:#334155}
+p{margin:8px 0}ul,ol{padding-right:24px;margin:8px 0}li{margin:3px 0}
+.note,.exam,.warning{padding:12px 16px;border-radius:10px;margin:14px 0;background:var(--soft);border-right:4px solid #94a3b8}
+.exam{background:#edf7f3;border-color:var(--green)}.warning{background:var(--yellow);border-color:#d69e25}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top}
+th{background:#edf1f4}
+code,pre,.ltr{direction:ltr;unicode-bidi:embed;font-family:Consolas,monospace}
+code{background:#f1f3f5;padding:2px 6px;border-radius:5px;color:#a13e2d}
+pre{background:#17212d;color:#f8fafc;padding:14px 16px;border-radius:9px;overflow:auto;text-align:left;line-height:1.7}
+.small{font-size:.88rem;color:var(--muted)}.tag{display:inline-block;background:#fbe9e4;color:#9f3e2d;border-radius:5px;padding:0 8px;font-size:.82rem}
+.toc{columns:2;column-gap:35px;background:#f7f8fa;padding:16px 28px;border-radius:10px}
+.toc a{color:#334155;text-decoration:none}.toc li{break-inside:avoid}
+.page-ref{color:var(--muted);font-size:.8rem;font-weight:500}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+@media(max-width:700px){main{margin:0;padding:24px 18px}.toc{columns:1}h1{font-size:1.55rem}}
+@media print{body{background:white}main{max-width:none;margin:0;padding:12mm 14mm;box-shadow:none}a{color:inherit}.no-print{display:none}h2{break-after:avoid}pre,table,.exam,.note{break-inside:avoid} }
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>جزوه فشرده و امتحانی Micro 3</h1>
+<div class="subtitle">ریزپردازنده و زبان اسمبلی — میکروکنترلر 8051 | خلاصه‌ی تمام ۸۲ صفحه</div>
+<p class="small">مطالب بر اساس فایل Micro3.pdf تنظیم شده‌اند. موارد پرتکرارِ مفهومی، جدول‌ها، دستورها و مثال‌های محاسباتی برجسته شده‌اند؛ این جزوه جایگزین مطالعه‌ی مثال‌های کلاسی نیست.</p>
+</header>
+
+<div class="exam"><b>اولویت مطالعه برای امتحان:</b> ساختار حافظه RAM و بانک‌ها (ص ۳۸ تا ۵۱)، ثبات PSW و پرچم‌ها (ص ۵۲ تا ۶۹)، پشته و محاسبه PUSH/POP (ص ۷۰ تا ۷۶)، دستورهای MOV و ADD و دنبال‌کردن PC (ص ۲۴ تا ۳۴)، و پایه‌های حافظه/پورت‌ها (ص ۱۰ تا ۲۰). این اولویت از میزان توضیح و مثال‌های حل‌شده در اسلایدها برداشت شده و تضمین‌کننده‌ی سؤال امتحان نیست.</div>
+
+<h2>فهرست</h2>
+<ol class="toc">
+<li><a href="#overview">مشخصات و معماری 8051</a></li>
+<li><a href="#clock">کلاک، سیکل ماشین و Reset</a></li>
+<li><a href="#pins">پایه‌های مهم و حافظه خارجی</a></li>
+<li><a href="#ports">پورت‌های ورودی/خروجی</a></li>
+<li><a href="#registers">رجیسترها و دستورهای پایه</a></li>
+<li><a href="#numbers">اعداد و نمایش علامت‌دار</a></li>
+<li><a href="#rompc">ROM، PC و اجرای برنامه</a></li>
+<li><a href="#ram">ساختار RAM و SFR</a></li>
+<li><a href="#banks">بانک‌های ثبات</a></li>
+<li><a href="#psw">ثبات PSW و پرچم‌ها</a></li>
+<li><a href="#stack">پشته و SP</a></li>
+<li><a href="#other">DPTR، تایمر، سریال و وقفه</a></li>
+<li><a href="#exam">سؤال‌های احتمالی و چک‌لیست</a></li>
+</ol>
+
+<section id="overview">
+<h2>۱) مشخصات و معماری میکروکنترلر 8051 <span class="page-ref">— صفحات ۱ تا ۵</span></h2>
+<table><tr><th>ویژگی</th><th>مقدار / کاربرد</th></tr>
+<tr><td>ROM داخلی</td><td>۴ کیلوبایت؛ محل نگهداری کد برنامه در 8051 معمولی</td></tr>
+<tr><td>RAM داخلی</td><td>۱۲۸ بایت؛ برای داده‌های برنامه</td></tr>
+<tr><td>پورت‌های I/O</td><td>چهار پورت ۸ بیتی: P0، P1، P2، P3 (مجموعاً ۳۲ خط)</td></tr>
+<tr><td>تایمرها</td><td>دو تایمر ۱۶ بیتی: Timer 0 و Timer 1</td></tr>
+<tr><td>ارتباط</td><td>یک پورت سریال</td></tr>
+<tr><td>حافظه خارجی</td><td>تا ۶۴KB حافظه برنامه و تا ۶۴KB حافظه داده</td></tr>
+<tr><td>قابلیت بیتی</td><td>عملیات روی بیت‌ها؛ اسلاید به ۲۱۰ بیت آدرس‌پذیر اشاره می‌کند</td></tr>
+<tr><td>ضرب و تقسیم</td><td>طبق اسلاید، انجام در ۴ میکروثانیه</td></tr></table>
+<p>در نمودار بلوکی صفحه ۴، CPU، نوسان‌ساز، کنترل وقفه، RAM، ROM، تایمرها، پورت سریال و چهار پورت I/O از طریق گذرگاه به هم متصل‌اند.</p>
+<div class="note"><b>مقایسه‌ای که باید بلد باشید:</b> ROM برای برنامه/کد و RAM برای داده است. 8051 فضای آدرس برنامه و داده را جداگانه در نظر می‌گیرد.</div>
+</section>
+
+<section id="clock">
+<h2>۲) کریستال، سیکل ماشین و Reset <span class="page-ref">— صفحات ۶ تا ۱۰</span></h2>
+<ul>
+<li>8051 برای کار به کلاک خارجی نیاز دارد.</li>
+<li>کریستال کوارتز به XTAL1 (پین ۱۹) و XTAL2 (پین ۱۸) وصل می‌شود. مثال اسلاید: کریستال ۱۲MHz همراه دو خازن ۳۰pF.</li>
+<li>هر سیکل ماشین ۴ فاز دارد: واکشی دستور، Decode، اجرای دستور و ذخیره نتیجه.</li>
+<li>هر فاز ممکن است یک یا چند کلاک طول بکشد؛ هر دستور حداقل یک سیکل ماشین لازم دارد و دستور پیچیده ممکن است چند سیکل طول بکشد. اجرای ۱٫۵ سیکل ماشین نداریم.</li>
+<li>در 8051 کلاسیک، هر سیکل ماشین = ۱۲ کلاک اسیلاتور.</li>
+</ul>
+<div class="exam"><b>فرمول مهم:</b><br>
+زمان یک کلاک = <span class="ltr">1 / f</span><br>
+زمان یک سیکل ماشین = <span class="ltr">12 / f</span> (برای 8051 این اسلایدها)<br>
+در نتیجه برای دستور ساده‌ی یک‌سیکل‌ماشینی، زمان اجرا همان <span class="ltr">12/f</span> است.</div>
+<table><tr><th>فرکانس کریستال</th><th>زمان هر کلاک</th><th>زمان یک سیکل ماشین</th></tr>
+<tr><td><span class="ltr">12 MHz</span></td><td><span class="ltr">0.0833 μs</span></td><td><b><span class="ltr">1 μs</span></b></td></tr>
+<tr><td><span class="ltr">11.059 MHz</span></td><td><span class="ltr">0.0904 μs</span></td><td><b><span class="ltr">1.085 μs</span></b></td></tr></table>
+<h3>پایه RST</h3>
+<ul>
+<li>اگر ورودی RST حداقل به مدت دو سیکل ماشین ۱ باشد، میکروکنترلر Reset می‌شود.</li>
+<li>فعالیت از ابتدا شروع می‌شود و ثبات‌ها مقادیر پیش‌فرض می‌گیرند؛ اجرای برنامه از آدرس صفر ROM شروع می‌شود.</li>
+<li>مقادیر Reset که در اسلاید آمده: <span class="ltr">PC=0000</span>، <span class="ltr">DPTR=0000</span>، <span class="ltr">ACC=00</span>، <span class="ltr">PSW=00</span>، <span class="ltr">SP=07</span>، <span class="ltr">B=00</span> و <span class="ltr">P0–P3=FF</span>.</li>
+</ul>
+</section>
+
+<section id="pins">
+<h2>۳) پایه‌های مهم و اتصال حافظه خارجی <span class="page-ref">— صفحات ۱۱ تا ۱۵</span></h2>
+<table><tr><th>پایه</th><th>نام کامل</th><th>نکته امتحانی</th></tr>
+<tr><td><span class="ltr">EA</span></td><td>External Access</td><td>اتصال به VCC: اجرای برنامه از ROM داخلی در 8051/8052. اتصال به GND: غیرفعال شدن ROM داخلی و اجرای برنامه از ROM خارجی. در 8031/8032 که ROM داخلی ندارند، به زمین وصل می‌شود.</td></tr>
+<tr><td><span class="ltr">PSEN</span></td><td>Program Store Enable</td><td>فعال‌سازی حافظه برنامه خارجی؛ به پایه OE حافظه خارجی متصل می‌شود. هنگام اجرای برنامه از ROM داخلی، PSEN غیرفعال و برابر ۱ است.</td></tr>
+<tr><td><span class="ltr">ALE</span></td><td>Address Latch Enable</td><td>برای جدا کردن آدرس و داده‌ی مالتی‌پلکس‌شده روی P0 استفاده می‌شود.</td></tr></table>
+<h3>چگونگی مالتی‌پلکس P0</h3>
+<ol>
+<li>در نیمه اول سیکل حافظه، <span class="ltr">ALE=1</span> و هشت بیت پایین آدرس <span class="ltr">A0–A7</span> روی P0 قرار می‌گیرد و در لَچ خارجی (در شکل: 74LS373) ذخیره می‌شود.</li>
+<li>در نیمه دوم، <span class="ltr">ALE=0</span> و P0 برای انتقال داده <span class="ltr">D0–D7</span> استفاده می‌شود.</li>
+<li>هشت بیت بالای آدرس <span class="ltr">A8–A15</span> از طریق P2 تأمین می‌شود.</li>
+<li>PSEN سیگنال فعال‌سازی/خواندن حافظه برنامه خارجی را فراهم می‌کند.</li>
+</ol>
+<div class="exam"><b>نکته عددی:</b> برای حافظه ۶۴KB به ۱۶ خط آدرس و ۸ خط داده (۲۴ خط) نیاز است؛ با اشتراک زمانی خطوط آدرس پایین و داده روی P0، تعداد پایه‌های درگیر در اتصال نشان‌داده‌شده به ۱۶ کاهش می‌یابد.</div>
+</section>
+
+<section id="ports">
+<h2>۴) پورت‌های ورودی/خروجی <span class="page-ref">— صفحات ۱۶ تا ۲۰ و ۷۸</span></h2>
+<ul>
+<li>چهار پورت ۸ بیتی P0 تا P3 وجود دارد.</li>
+<li>پس از Reset همه پورت‌ها <span class="ltr">FFH = 11111111B</span> هستند؛ بنابراین پایه‌ها در حالت ورودی قرار می‌گیرند.</li>
+<li>برای استفاده از یک پایه به‌عنوان ورودی، ابتدا باید مقدار آن پایه ۱ شود؛ نمونه: <code>SETB P1.5</code>.</li>
+</ul>
+<table><tr><th>پورت</th><th>کاربرد</th></tr>
+<tr><td><span class="ltr">P0</span></td><td>در نبود حافظه خارجی، I/O. در اتصال حافظه خارجی، باس مشترک آدرس پایین و داده؛ <span class="ltr">ALE=1</span> یعنی آدرس <span class="ltr">A0–A7</span> و <span class="ltr">ALE=0</span> یعنی داده <span class="ltr">D0–D7</span>.</td></tr>
+<tr><td><span class="ltr">P1</span></td><td>همیشه برای I/O؛ در 8032/8052، پایه‌های P1.0 و P1.1 می‌توانند ورودی پالس خارجی Timer 3 باشند.</td></tr>
+<tr><td><span class="ltr">P2</span></td><td>I/O یا هشت بیت بالای آدرس خارجی <span class="ltr">A8–A15</span>. هنگام استفاده از حافظه خارجی بزرگ‌تر از ۲۵۶ بایت، دیگر برای I/O آزاد نیست.</td></tr>
+<tr><td><span class="ltr">P3</span></td><td>I/O و دارای عملکردهای جایگزین مخصوص.</td></tr></table>
+<h3>عملکردهای جایگزین پایه‌های P3</h3>
+<table><tr><th>پایه</th><th>عملکرد جایگزین</th></tr>
+<tr><td><span class="ltr">P3.0</span></td><td><span class="ltr">RXD</span> — دریافت سریال</td></tr>
+<tr><td><span class="ltr">P3.1</span></td><td><span class="ltr">TXD</span> — ارسال سریال</td></tr>
+<tr><td><span class="ltr">P3.2</span></td><td><span class="ltr">INT0</span> — وقفه خارجی صفر</td></tr>
+<tr><td><span class="ltr">P3.3</span></td><td><span class="ltr">INT1</span> — وقفه خارجی یک</td></tr>
+<tr><td><span class="ltr">P3.4</span></td><td><span class="ltr">T0</span> — ورودی خارجی تایمر صفر</td></tr>
+<tr><td><span class="ltr">P3.5</span></td><td><span class="ltr">T1</span> — ورودی خارجی تایمر یک</td></tr>
+<tr><td><span class="ltr">P3.6</span></td><td><span class="ltr">WR</span> — نوشتن در حافظه داده خارجی</td></tr>
+<tr><td><span class="ltr">P3.7</span></td><td><span class="ltr">RD</span> — خواندن از حافظه داده خارجی</td></tr></table>
+<div class="note">مثال LED در اسلاید: اگر LED به P1.7 وصل باشد، <code>SETB P1.7</code> آن را روشن و <code>CLR P1.7</code> یا <code>CLR 97H</code> آن را خاموش می‌کند.</div>
+</section>
+
+<section id="registers">
+<h2>۵) رجیسترها و دستورهای پایه <span class="page-ref">— صفحات ۲۲ تا ۲۶</span></h2>
+<ul>
+<li>رجیستر محل ذخیره موقت داده یا آدرس است. بیشتر رجیسترهای 8051 هشت‌بیتی‌اند.</li>
+<li><b>A یا Accumulator:</b> رجیستر اصلی برای عملیات ریاضی و منطقی.</li>
+<li><b>B:</b> به A در عملیات ضرب و تقسیم کمک می‌کند.</li>
+<li><b>R0 تا R7:</b> هشت رجیستر عمومی در بانک فعال.</li>
+<li><b>DPTR و PC:</b> هر دو ۱۶ بیتی هستند.</li>
+</ul>
+<h3>دستور MOV</h3>
+<pre>MOV destination, source</pre>
+مقدار مبدأ را در مقصد کپی می‌کند؛ مبدأ تغییر نمی‌کند.
+<pre>MOV A, #23H     ; مقدار ثابت 23H در A
+MOV R5, #0F9H   ; مقدار ثابت F9H در R5
+MOV R0, A       ; کپی مقدار A در R0
+MOV A, 23H      ; خواندن محتوای خانه حافظه 23H در A</pre>
+<ul>
+<li>علامت <code>#</code> یعنی مقدار ثابت/Immediate؛ بدون #، آدرس خانه حافظه تفسیر می‌شود.</li>
+<li>اگر عدد هگز با حرف شروع شود، صفر ابتدایی می‌گذاریم؛ مثل <code>#0F9H</code>.</li>
+<li>عدد کوچک‌تر از ۸ بیت با صفر از سمت چپ کامل می‌شود؛ <code>MOV A,#5</code> معادل مقدار <span class="ltr">00000101</span> است.</li>
+<li>قرار دادن عدد بزرگ‌تر از ظرفیت ۸ بیت خطاست؛ مثال <code>MOV A,#7F4H</code> چون <span class="ltr">7F4H &gt; FFH</span>.</li>
+</ul>
+<h3>دستور ADD</h3>
+<pre>ADD A, source</pre>
+مقدار مبدأ را با A جمع می‌کند و نتیجه را در A قرار می‌دهد؛ مقصد همیشه A است.
+<pre>MOV A, #25H
+MOV R2, #34H
+ADD A, R2      ; A = A + R2 = 59H</pre>
+<div class="warning"><b>دام امتحانی:</b> <code>ADD R4,A</code> و <code>ADD R2,#12H</code> نادرست‌اند؛ در دستور ADD مقصد باید A باشد.</div>
+</section>
+
+<section id="numbers">
+<h2>۶) اعداد، هگزادسیمال و نمایش علامت‌دار <span class="page-ref">— صفحات ۲۳ و ۳۶</span></h2>
+<table><tr><th>باینری ۸ بیتی</th><th>Hex</th><th>Unsigned</th><th>Signed (متمم دو)</th></tr>
+<tr><td><span class="ltr">10011010</span></td><td><span class="ltr">9A</span></td><td>۱۵۴</td><td>−۱۰۲</td></tr>
+<tr><td><span class="ltr">00010001</span></td><td><span class="ltr">11</span></td><td>۱۷</td><td>۱۷</td></tr>
+<tr><td><span class="ltr">11111111</span></td><td><span class="ltr">FF</span></td><td>۲۵۵</td><td>−۱</td></tr>
+<tr><td><span class="ltr">01111111</span></td><td><span class="ltr">7F</span></td><td>۱۲۷</td><td>۱۲۷</td></tr>
+<tr><td><span class="ltr">10000000</span></td><td><span class="ltr">80</span></td><td>۱۲۸</td><td>−۱۲۸</td></tr></table>
+<ul>
+<li>در داده ۸ بیتی بدون علامت: بازه ۰ تا ۲۵۵ است.</li>
+<li>در نمایش علامت‌دار متمم دو: بازه −۱۲۸ تا +۱۲۷ است.</li>
+<li>اسلاید تأکید می‌کند 8051 داده‌های ۸ بیتی دارد؛ برای داده‌های بزرگ‌تر، مانند جمع دو عدد ۱۶ بیتی، باید چند مرحله/بایت را مدیریت کرد.</li>
+</ul>
+</section>
+
+<section id="rompc">
+<h2>۷) ROM، شمارنده برنامه PC و اجرای برنامه <span class="page-ref">— صفحات ۲۷ تا ۳۵</span></h2>
+<ul>
+<li>PC آدرس دستور بعدی برای اجرا را نگه می‌دارد؛ پس از واکشی دستور، متناسب با طول دستور افزایش می‌یابد.</li>
+<li>PC شانزده‌بیتی است و از <span class="ltr">0000H</span> تا <span class="ltr">FFFFH</span> را آدرس‌دهی می‌کند؛ یعنی حداکثر ۶۴KB فضای برنامه.</li>
+<li>پس از روشن‌شدن یا Reset، اجرای برنامه از آدرس <span class="ltr">0000H</span> آغاز می‌شود.</li>
+<li>با دستور اسمبلری <code>ORG</code> محل قرارگیری کد در ROM را برای اسمبلر مشخص می‌کنیم.</li>
+<li>در جدول صفحه ۲۸، ستون‌های شماره خط، آدرس ROM، کد ماشین، دستور اسمبلی، برچسب (label) و توضیح (comment) نمایش داده شده‌اند.</li>
+<li>دستورها ممکن است طول متفاوت داشته باشند؛ بنابراین PC به اندازه تعداد بایت‌های دستور جلو می‌رود.</li>
+</ul>
+<pre>ORG 0H
+MOV R5, #25H   ; در آدرس 0000، دو بایت
+MOV R7, #34H   ; در آدرس 0002، دو بایت
+MOV A, #0      ; در آدرس 0004، دو بایت
+ADD A, R5      ; در آدرس 0006، یک بایت
+ADD A, R7      ; در آدرس 0007، یک بایت
+ADD A, #12H    ; در آدرس 0008، دو بایت
+HERE: SJMP HERE ; در آدرس 000A، حلقه بی‌نهایت</pre>
+<div class="exam"><b>تمرین مهم ردگیری PC:</b> اگر دستور در آدرس 0000 دو بایت باشد، دستور بعدی از 0002 شروع می‌شود؛ اگر یک‌بایتی باشد، PC فقط یک واحد افزایش می‌یابد. در مثال بالا، آدرس‌ها به ترتیب 0000، 0002، 0004، 0006، 0007، 0008 و 000A هستند.</div>
+<p>اندازه ROM برنامه در خانواده 8051 از ۶۴KB بیشتر نمی‌شود، چون PC فقط ۱۶ بیت است.</p>
+</section>
+
+<section id="ram">
+<h2>۸) ساختار RAM داخلی و SFR <span class="page-ref">— صفحات ۳۷ تا ۴۴ و ۴۹ تا ۵۱</span></h2>
+<p>RAM داخلی ۱۲۸ بایتی از آدرس <span class="ltr">00H</span> تا <span class="ltr">7FH</span> سه بخش اصلی دارد:</p>
+<table><tr><th>آدرس</th><th>اندازه</th><th>کاربرد</th></tr>
+<tr><td><span class="ltr">00H–1FH</span></td><td>۳۲ بایت</td><td>چهار بانک رجیستر (R0 تا R7) و فضای مشترک با پشته</td></tr>
+<tr><td><span class="ltr">20H–2FH</span></td><td>۱۶ بایت</td><td>حافظه بیت‌آدرس‌پذیر؛ ۱۲۸ بیت</td></tr>
+<tr><td><span class="ltr">30H–7FH</span></td><td>۸۰ بایت</td><td>RAM عمومی</td></tr></table>
+<p>آدرس‌های <span class="ltr">80H–FFH</span> به ثبات‌های کاربرد خاص SFR و پورت‌ها اختصاص دارند؛ این محدوده، RAM عمومی داخلی ۱۲۸ بایتی نیست.</p>
+<h3>آدرس‌دهی مستقیم در برابر مقدار ثابت</h3>
+<pre>MOV A, #5FH   ; A = 5FH
+MOV A, 5FH    ; A = محتوای خانه RAM با آدرس 5FH</pre>
+<h3>بیت‌آدرس‌پذیری</h3>
+<ul>
+<li>در محدوده <span class="ltr">20H–2FH</span> هر بیت آدرس مستقل دارد؛ در مجموع ۱۲۸ بیت.</li>
+<li>مثال‌های اسلاید: <code>SETB 65H</code> بیت آدرس 65H را یک و <code>CLR 65H</code> آن را صفر می‌کند.</li>
+<li>برای یک‌کردن بیت ششم خانه 3CH می‌توان از عملیات بیتی یا ماسک مناسب استفاده کرد؛ شماره‌گذاری بیت‌ها و آدرس بیت را با دقت بررسی کنید.</li>
+</ul>
+<h3>ثبات‌های کاربرد خاص (SFR)</h3>
+<ul>
+<li>علاوه بر R0 تا R7، تعداد زیادی ثبات ویژه برای کنترل CPU، پورت‌ها، تایمر، سریال و وقفه وجود دارد.</li>
+<li>بیشتر SFRها آدرس‌دهی مستقیم دارند؛ برخی از آن‌ها بیت‌آدرس‌پذیرند.</li>
+<li>مثال اسلاید: <code>MOV A,R0</code> معادل <code>MOV 0E0H,R0</code> است، چون آدرس ACC برابر E0H است.</li>
+<li>مثال: <code>SETB 0F7H</code> بیت پرارزش ثبات B را یک می‌کند.</li>
+</ul>
+</section>
+
+<section id="banks">
+<h2>۹) بانک‌های ثبات <span class="page-ref">— صفحات ۴۵ تا ۴۸ و ۵۷ تا ۶۰</span></h2>
+<ul>
+<li>چهار بانک ثبات وجود دارد؛ هر بانک شامل R0 تا R7 است.</li>
+<li>انتخاب بانک با دو بیت <span class="ltr">RS1</span> و <span class="ltr">RS0</span> در PSW انجام می‌شود.</li>
+<li>پس از روشن‌شدن/Reset، بانک صفر فعال است.</li>
+</ul>
+<table><tr><th>RS1</th><th>RS0</th><th>بانک فعال</th><th>آدرس R0 تا R7</th></tr>
+<tr><td>۰</td><td>۰</td><td>Bank 0</td><td><span class="ltr">00H–07H</span></td></tr>
+<tr><td>۰</td><td>۱</td><td>Bank 1</td><td><span class="ltr">08H–0FH</span></td></tr>
+<tr><td>۱</td><td>۰</td><td>Bank 2</td><td><span class="ltr">10H–17H</span></td></tr>
+<tr><td>۱</td><td>۱</td><td>Bank 3</td><td><span class="ltr">18H–1FH</span></td></tr></table>
+<p>نمونه‌های اسلاید:</p>
+<ul>
+<li>در بانک صفر، <code>MOV A,R5</code> محتوای آدرس <span class="ltr">05H</span> را در A می‌ریزد.</li>
+<li>در بانک سه، همین دستور به آدرس <span class="ltr">1DH</span> اشاره می‌کند.</li>
+<li><code>SETB RS1</code> و <code>CLR RS0</code> بانک ۲ را انتخاب می‌کند؛ <code>SETB PSW.4</code> و <code>SETB PSW.3</code> بانک ۳ را فعال می‌کند.</li>
+</ul>
+<div class="exam"><b>کاربرد بانک‌ها:</b> برای بخش‌های مختلف برنامه یا زیربرنامه‌ها بانک جدا در نظر می‌گیریم تا تغییر R0 تا R7 در یک زیربرنامه، مقادیر رجیسترهای بخش دیگر را خراب نکند.</div>
+</section>
+
+<section id="psw">
+<h2>۱۰) ثبات وضعیت PSW و پرچم‌ها <span class="page-ref">— صفحات ۵۲ تا ۶۹</span></h2>
+<p>PSW یا Program Status Word ثبات ۸ بیتی وضعیت است. بیت‌های آن پس از اجرای دستورها، طبق نتیجه عملیات، تغییر می‌کنند.</p>
+<table><tr><th>بیت</th><th>نام</th><th>آدرس</th><th>معنی</th></tr>
+<tr><td><span class="ltr">PSW.7</span></td><td><b>C / CY</b></td><td><span class="ltr">D7H</span></td><td>پرچم نقلی Carry</td></tr>
+<tr><td><span class="ltr">PSW.6</span></td><td><b>AC</b></td><td><span class="ltr">D6H</span></td><td>نقلی کمکی Auxiliary Carry</td></tr>
+<tr><td><span class="ltr">PSW.5</span></td><td><b>F0</b></td><td><span class="ltr">D5H</span></td><td>پرچم صفر/عمومی قابل استفاده کاربر</td></tr>
+<tr><td><span class="ltr">PSW.4</span></td><td><b>RS1</b></td><td><span class="ltr">D4H</span></td><td>انتخاب بانک ثبات</td></tr>
+<tr><td><span class="ltr">PSW.3</span></td><td><b>RS0</b></td><td><span class="ltr">D3H</span></td><td>انتخاب بانک ثبات</td></tr>
+<tr><td><span class="ltr">PSW.2</span></td><td><b>OV</b></td><td><span class="ltr">D2H</span></td><td>پرچم سرریز Overflow</td></tr>
+<tr><td><span class="ltr">PSW.1</span></td><td>رزرو</td><td><span class="ltr">D1H</span></td><td>رزرو شده</td></tr>
+<tr><td><span class="ltr">PSW.0</span></td><td><b>P</b></td><td><span class="ltr">D0H</span></td><td>پرچم توازن زوج Parity</td></tr></table>
+<h3>Carry یا C</h3>
+<ul>
+<li>در جمع، اگر از بیت هفتم carry خارج شود، C=1.</li>
+<li>در تفریق، اگر از بیت هشتم borrow گرفته شود، C=1 (طبق توضیح اسلاید).</li>
+<li>برای اعداد بدون علامت، پرچم C را بررسی می‌کنیم.</li>
+<li>می‌توان C را مستقیم هم تغییر داد؛ نمونه اسلاید: <code>ANL C,25H</code> یعنی AND کردن C با بیت آدرس‌پذیر 25H.</li>
+</ul>
+<h3>Auxiliary Carry یا AC</h3>
+<ul><li>در جمع، خروج carry از بیت سوم (مرز بین نیم‌بایت پایین و بالا) باعث AC=1 می‌شود.</li><li>در تفریق، borrow از بیت چهارم باعث AC=1 می‌شود.</li></ul>
+<h3>F0 و بیت‌های انتخاب بانک</h3>
+<ul><li>F0 پرچم آزاد برای استفاده برنامه‌نویس است.</li><li>RS1 و RS0 چهار حالت انتخاب بانک را تعیین می‌کنند؛ جدول بخش قبل را حفظ کنید.</li></ul>
+<h3>Overflow یا OV</h3>
+<ul>
+<li>برای اعداد علامت‌دار، بازه ۸ بیتی معتبر از −۱۲۸ تا +۱۲۷ است.</li>
+<li>اگر جمع دو عدد مثبت نتیجه منفی بدهد یا جمع دو عدد منفی نتیجه مثبت بدهد، سرریز رخ داده است.</li>
+<li>در تفریق نیز اگر علامت نتیجه با حالت مورد انتظار ناسازگار شود، سرریز رخ می‌دهد؛ مثال‌های اسلاید: <span class="ltr">(+A)-(-B)=(-C)</span> و <span class="ltr">(-A)-(+B)=(+C)</span>.</li>
+<li>برای اعداد علامت‌دار به OV نگاه می‌کنیم؛ برای اعداد بدون علامت به C.</li>
+<li>روش تشخیص جمع: اگر carry ورودی و خروجی بیت پرارزش با هم متفاوت باشند، OV=1.</li>
+<li>روش تفریق در اسلاید: اگر وضعیت borrow در دو بیت آخر/یکی مانده به آخر متفاوت باشد، OV=1.</li>
+</ul>
+<h3>Parity یا P</h3>
+<ul><li>P طوری تنظیم می‌شود که تعداد بیت‌های ۱ در A به‌علاوه P زوج باشد.</li><li>اگر تعداد بیت‌های ۱ در A زوج باشد، P=0؛ اگر فرد باشد، P=1.</li><li>مثال: <code>MOV A,#55H</code>؛ مقدار 55H چهار بیت ۱ دارد، پس P=0.</li></ul>
+<div class="exam"><b>نکته طلایی:</b> C برای جمع/تفریق بدون علامت، OV برای محاسبات علامت‌دار، AC برای نقلی نیم‌بایت و P برای زوج‌کردن تعداد یک‌های A است.</div>
+<h3>مثال‌های حل‌شده اسلاید</h3>
+<table><tr><th>عملیات</th><th>نتیجه</th><th>پرچم‌ها</th></tr>
+<tr><td><span class="ltr">38H + 2FH</span></td><td><span class="ltr">67H</span></td><td><span class="ltr">C=0, AC=1, P=1, OV=0</span></td></tr>
+<tr><td><span class="ltr">9CH + 64H</span></td><td><span class="ltr">100H</span>؛ بایت نتیجه <span class="ltr">00H</span></td><td><span class="ltr">C=1, AC=1, P=0, OV=0</span></td></tr></table>
+<p class="small">صفحات ۶۸ و ۶۹ تمرین محاسبه C، AC، P و OV را با دو جمع نمونه نشان می‌دهند؛ در حل سؤال، ابتدا جمع باینری ۸ بیتی را بنویسید، carryها را بررسی کنید، سپس parity نتیجه A را تعیین کنید.</p>
+</section>
+
+<section id="stack">
+<h2>۱۱) پشته (Stack) و اشاره‌گر SP <span class="page-ref">— صفحات ۷۰ تا ۷۶</span></h2>
+<ul>
+<li>پشته بخشی از RAM برای نگهداری موقت داده یا آدرس است.</li>
+<li>SP یا Stack Pointer آدرس خانه بالای پشته را نگه می‌دارد.</li>
+<li>پس از Reset مقدار SP برابر <span class="ltr">07H</span> است؛ بنابراین اولین خانه قابل استفاده پشته <span class="ltr">08H</span> خواهد بود.</li>
+<li>پشته در RAM از آدرس پایین به بالا رشد می‌کند.</li>
+</ul>
+<table><tr><th>دستور</th><th>ترتیب اجرا</th></tr>
+<tr><td><code>PUSH direct</code></td><td>ابتدا SP یک واحد زیاد می‌شود؛ سپس داده در خانه‌ای که SP نشان می‌دهد ذخیره می‌شود.</td></tr>
+<tr><td><code>POP direct</code></td><td>ابتدا داده از خانه‌ای که SP نشان می‌دهد خوانده می‌شود؛ سپس SP یک واحد کم می‌شود.</td></tr></table>
+<div class="exam"><b>قاعده حفظی:</b> PUSH = اول افزایش SP، بعد ذخیره. POP = اول خواندن، بعد کاهش SP.</div>
+<h3>تنظیم محل شروع پشته</h3>
+<p>اگر بخواهیم اولین خانه پشته 60H باشد، باید SP را یک خانه قبل از آن تنظیم کنیم:</p>
+<pre>MOV SP, #5FH   ; اولین PUSH در 60H قرار می‌گیرد</pre>
+<p>در مثال صفحه ۷۲، فضای بین 60H تا 7FH برابر ۳۲ بایت است. به دلیل اشغال بازه 20H–2FH برای بیت‌آدرس‌پذیری، اسلاید توصیه می‌کند SP به ناحیه مناسب دیگری منتقل شود.</p>
+<h3>مثال PUSH با SP اولیه 07H</h3>
+<pre>MOV R6, #25H
+MOV R1, #12H
+MOV R4, #0F3H
+PUSH 6
+PUSH 1
+PUSH 4</pre>
+<table><tr><th>مرحله</th><th>SP</th><th>محتوای خانه جدید</th></tr>
+<tr><td>شروع</td><td><span class="ltr">07H</span></td><td>—</td></tr>
+<tr><td><span class="ltr">PUSH 6</span></td><td><span class="ltr">08H</span></td><td><span class="ltr">08H = 25H</span></td></tr>
+<tr><td><span class="ltr">PUSH 1</span></td><td><span class="ltr">09H</span></td><td><span class="ltr">09H = 12H</span></td></tr>
+<tr><td><span class="ltr">PUSH 4</span></td><td><span class="ltr">0AH</span></td><td><span class="ltr">0AH = F3H</span></td></tr></table>
+<h3>مثال POP</h3>
+<p>اگر SP برابر 0BH باشد و داده‌ها در 08H=6C، 09H=76، 0AH=F9 و 0BH=54 باشند:</p>
+<pre>POP 3   ; مقدار 54H به مقصد مستقیم 03H، سپس SP=0AH
+POP 5   ; مقدار F9H به مقصد 05H، سپس SP=09H
+POP 2   ; مقدار 76H به مقصد 02H، سپس SP=08H</pre>
+<h3>نکات مهم پشته و CALL/RET</h3>
+<ul>
+<li>پشته نباید به انتهای RAM برسد یا با ناحیه‌های دیگر تداخل کند.</li>
+<li>در Reset، بانک صفر و پشته از فضای RAM مشترک استفاده می‌کنند؛ پس محل SP را با توجه به بانک‌ها انتخاب کنید.</li>
+<li>با <code>MOV SP,#x</code> می‌توان پشته را به بخش دیگری از RAM منتقل کرد.</li>
+<li><code>CALL</code> آدرس بازگشت (PC) را خودکار در پشته ذخیره می‌کند؛ <code>RET</code> آن را از پشته برمی‌گرداند و در PC می‌گذارد.</li>
+</ul>
+</section>
+
+<section id="other">
+<h2>۱۲) سایر رجیسترهای مهم: DPTR، پورت، تایمر، سریال، وقفه و توان <span class="page-ref">— صفحات ۷۷ تا ۸۲</span></h2>
+<h3>DPTR — Data Pointer</h3>
+<ul>
+<li>رجیستر ۱۶ بیتی؛ از دو بخش تشکیل شده: <span class="ltr">DPL</span> (بایت کم‌ارزش) و <span class="ltr">DPH</span> (بایت پرارزش).</li>
+<li>برای دسترسی به حافظه خارجی استفاده می‌شود.</li>
+<li>نمونه اسلاید: ذخیره 55H در آدرس 1000H حافظه داده خارجی.</li>
+</ul>
+<pre>MOV A, #55H
+MOV DPTR, #1000H
+MOVX @DPTR, A</pre>
+<p>در این مثال DPH=10H و DPL=00H است. <code>MOVX</code> برای انتقال به/از حافظه داده خارجی به‌کار می‌رود.</p>
+<h3>ثبات‌های پورت</h3>
+<ul><li>برای انتقال ورودی و خروجی استفاده می‌شوند.</li><li>ورودی‌کردن پایه: ابتدا مقدار آن را ۱ کنید؛ مثال <code>MOV P0,#0FFH</code> یا <code>SETB P3.1</code>.</li></ul>
+<h3>ثبات‌های تایمر</h3>
+<ul>
+<li>8051 دو تایمر ۱۶ بیتی Timer 0 و Timer 1 دارد؛ برای اندازه‌گیری زمان و شمارش رویدادها.</li>
+<li>Timer 0 از <span class="ltr">TH0</span> (بایت پرارزش) و <span class="ltr">TL0</span> (بایت کم‌ارزش) تشکیل می‌شود.</li>
+<li>Timer 1 از <span class="ltr">TH1</span> و <span class="ltr">TL1</span> تشکیل می‌شود.</li>
+<li>نحوه عملکرد در TMOD (حالت تایمر) و TCON (کنترل) مشخص می‌شود.</li>
+</ul>
+<h3>پورت سریال</h3>
+<ul><li>برای ارسال و دریافت سریال داده به‌کار می‌رود.</li><li>تنظیمات در <span class="ltr">SCON</span> انجام می‌شود.</li><li>داده ارسالی/دریافتی در بافر <span class="ltr">SBUF</span> قرار می‌گیرد.</li><li>پایه‌های سریال روی P3: <span class="ltr">P3.0=RXD</span> و <span class="ltr">P3.1=TXD</span>.</li></ul>
+<h3>وقفه‌ها</h3>
+<ul><li>8051 دارای ۶ منبع وقفه و دو سطح اولویت است.</li><li>پس از Reset وقفه‌ها غیرفعال‌اند.</li><li>با ثبات <span class="ltr">IE</span> (Interrupt Enable) وقفه‌ها فعال می‌شوند.</li><li>با ثبات <span class="ltr">IP</span> (Interrupt Priority) اولویت وقفه‌ها تعیین می‌شود.</li></ul>
+<h3>ثبات کنترل توان</h3>
+<p>ثبات <span class="ltr">PCON</span> یا Power Control شامل بیت‌های کنترلی مختلف است. در فایل فقط عنوان و اشاره کلی آمده و جزئیات بیت‌ها توضیح داده نشده است؛ بنابراین جزئیات بیشتری به این بخش اضافه نشده است.</p>
+</section>
+
+<section id="exam">
+<h2>۱۳) سؤال‌های محتمل و پاسخ کوتاه</h2>
+<ol>
+<li><b>مشخصات اصلی 8051 چیست؟</b> 4KB ROM، 128B RAM، چهار پورت ۸ بیتی، دو تایمر ۱۶ بیتی، پورت سریال، و فضای خارجی ۶۴KB برای برنامه و ۶۴KB برای داده.</li>
+<li><b>هر سیکل ماشین 8051 چند کلاک است؟</b> ۱۲ کلاک اسیلاتور.</li>
+<li><b>با کریستال 12MHz زمان یک سیکل ماشین چقدر است؟</b> یک میکروثانیه.</li>
+<li><b>RST چه زمانی میکروکنترلر را Reset می‌کند؟</b> وقتی حداقل دو سیکل ماشین در سطح ۱ باشد.</li>
+<li><b>EA=1 و EA=0 چه تفاوتی دارند؟</b> EA=1 استفاده از ROM داخلی؛ EA=0 غیرفعال‌کردن ROM داخلی و استفاده از ROM خارجی.</li>
+<li><b>وظیفه ALE و PSEN چیست؟</b> ALE جداسازی آدرس/داده روی P0؛ PSEN فعال‌سازی حافظه برنامه خارجی.</li>
+<li><b>در اتصال حافظه خارجی، P0 و P2 چه می‌کنند؟</b> P0 آدرس پایین و داده را به‌صورت مشترک حمل می‌کند؛ P2 آدرس بالای A8–A15 را می‌دهد.</li>
+<li><b>برای ورودی‌کردن یک پایه چه باید کرد؟</b> مقدار آن پایه را ابتدا ۱ کرد.</li>
+<li><b>فرق MOV A,#5FH و MOV A,5FH چیست؟</b> اولی مقدار ثابت 5FH را می‌ریزد؛ دومی محتوای خانه 5FH را می‌خواند.</li>
+<li><b>مقصد دستور ADD کجاست؟</b> همیشه A.</li>
+<li><b>PC چند بیتی است و از کجا شروع می‌کند؟</b> ۱۶ بیتی، شروع از 0000H.</li>
+<li><b>RAM داخلی چگونه تقسیم شده؟</b> 00–1F بانک‌ها، 20–2F بیت‌آدرس‌پذیر، 30–7F عمومی؛ 80–FF محدوده SFR.</li>
+<li><b>چه بیت‌هایی بانک ثبات را انتخاب می‌کنند؟</b> RS1 و RS0 در PSW.</li>
+<li><b>برای اعداد unsigned و signed کدام پرچم مهم است؟</b> C برای unsigned و OV برای signed.</li>
+<li><b>ترتیب PUSH و POP چیست؟</b> PUSH: افزایش SP سپس ذخیره؛ POP: خواندن سپس کاهش SP.</li>
+<li><b>SP بعد از Reset چند است؟</b> 07H؛ اولین خانه پشته 08H.</li>
+<li><b>CALL و RET چه می‌کنند؟</b> CALL آدرس بازگشت را در پشته ذخیره می‌کند؛ RET آن را بازیابی می‌کند.</li>
+<li><b>DPTR چیست؟</b> اشاره‌گر ۱۶ بیتی شامل DPH و DPL برای آدرس‌دهی حافظه خارجی.</li>
+<li><b>SCON و SBUF چه کاربردی دارند؟</b> تنظیم پورت سریال و نگهداری داده ارسالی/دریافتی.</li>
+<li><b>IE و IP چه کاربردی دارند؟</b> فعال‌سازی وقفه‌ها و تعیین اولویت آن‌ها.</li>
+</ol>
+<h2>۱۴) چک‌لیست مرور نهایی</h2>
+<ul>
+<li>□ مشخصات عددی 8051 و تفکیک ROM/RAM را حفظ هستم.</li>
+<li>□ می‌توانم زمان سیکل ماشین را از فرکانس کریستال حساب کنم.</li>
+<li>□ وظیفه EA، ALE، PSEN و پایه‌های P0 تا P3 را توضیح می‌دهم.</li>
+<li>□ تفاوت Immediate با Direct را در دستور MOV تشخیص می‌دهم.</li>
+<li>□ می‌توانم آدرس دستور بعدی و مقدار PC را از روی طول دستور پیدا کنم.</li>
+<li>□ نقشه RAM، آدرس بیت‌ها و چهار بانک ثبات را بلدم.</li>
+<li>□ می‌توانم C، AC، OV و P را پس از جمع/تفریق محاسبه کنم.</li>
+<li>□ ترتیب PUSH/POP و تغییر SP را در چند دستور پشت سر هم محاسبه می‌کنم.</li>
+<li>□ کاربرد DPTR، MOVX، TMOD، TCON، SCON، SBUF، IE و IP را می‌دانم.</li>
+</ul>
+<div class="exam"><b>روش پیشنهادی مرور:</b> ابتدا جدول‌های RAM، بانک‌ها و PSW را از حفظ بازسازی کن؛ سپس مثال‌های PC و PUSH/POP را بدون نگاه‌کردن به پاسخ حل کن؛ در پایان دو مثال جمع باینری برای C، AC، OV و P انجام بده.</div>
+<p class="small">پوشش صفحات: ۱–۸۲ فایل Micro3.pdf. صفحات عنوان یا نموداری نیز بررسی شده‌اند؛ در مواردی که اسلاید صرفاً شکل یا عنوان دارد، از افزودن توضیح خارج از فایل خودداری شده است.</p>
+</section>
+</main>
+</body></html>
