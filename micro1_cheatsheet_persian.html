@@ -23,8 +23,17 @@ table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}td,th{b
 .small{font-size:12px;color:var(--muted)}.check label{display:block;margin:6px 0}.check input{accent-color:var(--red);margin-left:8px}
 .hide{display:none!important}footer{text-align:center;color:var(--muted);padding:20px}
 @media print{body{background:#fff;font-size:11pt}nav{display:none}header{background:#fff;color:#111;border-bottom:2px solid #555;padding:15px}header p{color:#333}.pill{border-color:#999}.card{box-shadow:none;break-inside:avoid;margin:8px 0;padding:12px}h2{font-size:16pt}.wrap{max-width:none;padding:0 7px}button{display:none}}
-</style></head>
+</style>
+<link rel="stylesheet" href="navbar.css">
+</head>
 <body>
+<nav class="course-nav no-print" aria-label="انتخاب جزوه">
+  <div class="course-nav__links">
+    <a href="micro1_cheatsheet_persian.html" aria-current="page"><span lang="en" dir="ltr">Micro 1</span></a>
+    <a href="micro2_cheatsheet_persian.html"><span lang="en" dir="ltr">Micro 2</span></a>
+    <a href="Micro3_cheatsheet_persian.html"><span lang="en" dir="ltr">Micro 3</span></a>
+  </div>
+</nav>
 <header><div class="wrap"><h1>جزوه فشرده و امتحانی</h1><p>ریزپردازنده و زبان اسمبلی | آشنایی با میکروکنترلرها و خانواده 8051</p>
 <div class="pills"><span class="pill">بررسی تمام ۳۳ صفحه PDF</span><span class="pill">شامل نکات نمودارها و جدول‌ها</span><span class="pill">مرور + پرسش و پاسخ</span></div></div></header>
 <nav><div class="wrap tools"><input id="q" placeholder="جست‌وجو در جزوه..."><button onclick="print()">چاپ / ذخیره PDF</button><button class="secondary" onclick="q.value='';filter()">پاک‌کردن</button></div></nav>
