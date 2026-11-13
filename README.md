@@ -7,8 +7,9 @@ Persian, right-to-left study notes for Micro 1, Micro 2, and Micro 3. This is a 
 - [Micro 1](index.html) — the site homepage
 - [Micro 2](micro2_cheatsheet_persian.html)
 - [Micro 3](Micro3_cheatsheet_persian.html)
+- [Exam answers](exam-answers.html) — answers to the chapter 1–3 sample questions
 
-Every page includes navigation to the other two. Keep the HTML files and `navbar.css` together in the repository root. Relative links support both local previews and GitHub Pages project URLs such as `/micro/`.
+Every page includes navigation to the other pages. Keep the HTML files and `navbar.css` together in the repository root. Relative links support both local previews and GitHub Pages project URLs such as `/micro/`.
 
 ## Preview locally
 
